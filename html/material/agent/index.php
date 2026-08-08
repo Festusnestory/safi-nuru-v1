@@ -40,12 +40,8 @@ $baseUrl = \App\Core\Router::basePath();
                 <i class="bi bi-arrow-left me-1"></i>
                 Back to login
             </a>
-            <div class="text-center mt-2">
-                <h1 class="app-title">
-                    <i class="bi bi-person-badge"></i>
-                    Agent Application
-                </h1>
-                <p class="app-subtitle">Apply to join the Nuru agent network</p>
+            <div class="mt-2">
+                <h1 class="h4 mb-0 text-primary">Agent Application</h1>
             </div>
         </div>
     </header>

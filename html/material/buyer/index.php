@@ -52,12 +52,8 @@ $baseUrl = \App\Core\Router::basePath();
                 <i class="fas fa-arrow-left me-1"></i>
                 Back to login
             </a>
-            <div class="text-center mt-2">
-                <h1 class="h4 mb-2 text-primary">Buyer Application Form</h1>
-                <p class="text-muted mb-0 small">
-                    Complete this comprehensive form to begin your property journey with Nuru Real Estate.
-                    All information is kept confidential and secure.
-                </p>
+            <div class="mt-2">
+                <h1 class="h4 mb-0 text-primary">Buyer Application</h1>
             </div>
         </div>
     </header>
