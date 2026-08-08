@@ -170,45 +170,34 @@
     text-decoration: underline;
 }
 
-/* Horizontal stepper (replaces the old left sidebar) - wraps on narrow
-   screens, each step is icon + short title only (no subtitle, to stay
-   compact across nine steps in one row). */
-.seller-stepper-card {
-    border: 1px solid var(--border-color);
+/* Progress indicator - same simple thin-bar + text-label row as the buyer
+   form (html/material/buyer/css/buyer-form.css), not the old boxed-icon
+   left sidebar or the pill-stepper this replaced. */
+.progress-container {
+    position: relative;
 }
 
-.seller-stepper-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.seller-stepper-row .stepper-item {
-    /* Bootstrap's .list-group-item sets width:100% - override it, or every
-       step stacks one-per-row regardless of the flex row it's sitting in. */
-    flex: 0 1 auto;
-    width: auto;
-    display: inline-flex;
-    border: none;
-    border-radius: 999px;
-    padding: 0.35rem 0.85rem 0.35rem 0.35rem;
-}
-
-.seller-stepper-row .step-icon {
-    width: 1.75rem;
-    height: 1.75rem;
-    margin-right: 0.5rem;
-    font-size: 0.75rem;
-}
-
-.seller-stepper-row .step-subtitle {
-    display: none;
-}
-
-.seller-stepper-row .step-title {
+.step-label {
     font-size: 0.8rem;
-    white-space: nowrap;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.step-label.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.step-label.completed {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.step-label:hover {
+    background-color: rgba(13, 110, 253, 0.05);
 }
 
 /* Right-sized fields: form-control/select default height reads as
@@ -728,32 +717,6 @@
     .card {
         box-shadow: none;
         border: 1px solid #ddd;
-    }
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-    .bg-light {
-        background-color: #1a1a1a !important;
-    }
-    
-    .card {
-        background-color: #2d3748;
-        color: #e2e8f0;
-    }
-    
-    .form-control,
-    .form-select {
-        background-color: #4a5568;
-        border-color: #718096;
-        color: #e2e8f0;
-    }
-    
-    .form-control:focus,
-    .form-select:focus {
-        background-color: #4a5568;
-        border-color: var(--primary-color);
-        color: #e2e8f0;
     }
 }
 

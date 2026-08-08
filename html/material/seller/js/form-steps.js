@@ -20,7 +20,10 @@ const FormStepper = {
 
     // Initialize stepper
     init() {
-        this.createStepper();
+        // The stepper UI is now the same static progress-bar + step-label
+        // row markup as the buyer form (see seller/index.php) rather than
+        // JS-generated - createStepper()/updateStepper() (further down)
+        // targeted the old .stepper-item markup and are unused now.
         this.setupNavigation();
         this.updateProgress();
         this.loadSavedProgress();
@@ -93,6 +96,16 @@ const FormStepper = {
         if (prevBtn) {
             prevBtn.addEventListener('click', () => this.previousStep());
         }
+
+        // Allow clicking on progress steps (matches the buyer form's stepper)
+        document.querySelectorAll('.step-label').forEach(label => {
+            label.addEventListener('click', (e) => {
+                const targetStep = parseInt(e.target.getAttribute('data-step'));
+                if (this.canNavigateToStep(targetStep)) {
+                    this.goToStep(targetStep);
+                }
+            });
+        });
 
         // Hide navigation on last step
         this.updateNavigationVisibility();
@@ -297,9 +310,13 @@ const FormStepper = {
         const completedPercentage = (this.completedSteps.size / this.totalSteps) * 100;
 
         // Update main progress bar
-        const progressBar = document.getElementById('headerProgressBar');
+        const progressBar = document.getElementById('progressBar');
         if (progressBar) {
             progressBar.style.width = progressPercentage + '%';
+        }
+        const headerProgressBar = document.getElementById('headerProgressBar');
+        if (headerProgressBar) {
+            headerProgressBar.style.width = progressPercentage + '%';
         }
         const mobileProgressBar = document.getElementById('mobileProgressBar');
         if (mobileProgressBar) {

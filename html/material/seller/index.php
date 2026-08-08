@@ -69,19 +69,28 @@ $baseUrl = \App\Core\Router::basePath();
 
     <!-- Main Content -->
     <main class="container pb-5">
-        <!-- Horizontal Form Stepper -->
-        <div class="card seller-stepper-card mb-4">
-            <div class="card-body py-2">
-                <div id="formStepper" class="seller-stepper-row">
-                    <!-- Steps will be populated by JavaScript -->
-                </div>
-                <div class="text-center pt-2 border-top mt-2">
-                    <p class="small text-muted mb-1">
-                        <span id="completedCount">0</span> of 9 steps completed
-                    </p>
-                    <div class="progress" style="height: 4px;">
-                        <div class="progress-bar bg-success" role="progressbar"
-                             style="width: 0%;" id="sidebarProgress"></div>
+        <!-- Progress Indicator (same simple pattern as the buyer form) -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-10">
+                <div class="card shadow-sm">
+                    <div class="card-body py-3">
+                        <div class="progress-container">
+                            <div class="progress mb-2" style="height: 6px;">
+                                <div class="progress-bar bg-primary" role="progressbar"
+                                     style="width: 11.11%;" id="progressBar"></div>
+                            </div>
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span class="step-label active" data-step="1">Personal</span>
+                                <span class="step-label" data-step="2">Marital</span>
+                                <span class="step-label" data-step="3">Address</span>
+                                <span class="step-label" data-step="4">Next of Kin</span>
+                                <span class="step-label" data-step="5">Sale Type</span>
+                                <span class="step-label" data-step="6">Property</span>
+                                <span class="step-label" data-step="7">Documents</span>
+                                <span class="step-label" data-step="8">Media</span>
+                                <span class="step-label" data-step="9">Declaration</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
