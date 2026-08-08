@@ -16,7 +16,7 @@ final class Database
 {
     public static function connection(): \PDO
     {
-        global $pdo;
+        global $pdo, $nuruSettings;
         require NURU_MATERIAL . '/config/pdo.php';
         return $pdo;
     }

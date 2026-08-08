@@ -19,6 +19,11 @@ final class View
         if (!is_file($path)) {
             throw new \RuntimeException("View not found: {$template} ({$path})");
         }
+        // Legacy partials this view may require (top-bar.php, left-sidebar.php,
+        // _page_head.php) read $pdo/$nuruSettings as plain variables inherited
+        // from the including page's top-level scope - `global` here restores
+        // that same visibility for code nested inside this method.
+        global $pdo, $nuruSettings;
         extract($data, EXTR_SKIP);
         require $path;
     }
