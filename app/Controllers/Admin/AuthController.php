@@ -39,6 +39,16 @@ final class AuthController
         require_once \NURU_MATERIAL . '/config/role_helpers.php';
     }
 
+    /** Self-submitting entry point for the clean /login route: GET renders, POST authenticates. */
+    public function loginPage(): void
+    {
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+            $this->login();
+            return;
+        }
+        $this->showLogin();
+    }
+
     public function showLogin(): void
     {
         require_once \NURU_MATERIAL . '/config/turnstile.php';
@@ -49,6 +59,7 @@ final class AuthController
         header('Referrer-Policy: same-origin');
         View::render('admin.auth.login', [
             'passwordResetCsrf' => \csrfToken('password_reset_request'),
+            'baseUrl' => \App\Core\Router::basePath(),
         ]);
     }
 
@@ -150,7 +161,7 @@ final class AuthController
             $_SESSION['must_change_password'] = (bool) $user['must_change_password'];
             $_SESSION['session_version'] = (int) $user['session_version'];
 
-            $redirect = $_SESSION['must_change_password'] ? 'change-password.php' : match ($user['role']) {
+            $target = $_SESSION['must_change_password'] ? 'change-password.php' : match ($user['role']) {
                 'buyer' => 'dashboard_1.php',
                 'manager' => 'dashboard_2.php',
                 'agent_coordinator' => 'dashboard_3.php',
@@ -159,6 +170,11 @@ final class AuthController
                 'admin' => 'admin.php',
                 default => 'authentication-login.php',
             };
+            // Absolute so the redirect works whether this request landed via
+            // the legacy html/material/authentication-login.php URL or the
+            // clean /login route (public/index.php) - a relative target
+            // resolves differently depending on which one served the page.
+            $redirect = \App\Core\Router::basePath() . '/html/material/' . $target;
 
             $this->loginResponse(200, 'success', 'Login successful.', $redirect);
         } catch (\Throwable $error) {
@@ -204,7 +220,7 @@ final class AuthController
 
         header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
         header('Pragma: no-cache');
-        header('Location: ../authentication-login.php');
+        header('Location: ' . \App\Core\Router::basePath() . '/login');
         exit;
     }
 

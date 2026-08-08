@@ -1,5 +1,6 @@
 <?php
 /** @var string $passwordResetCsrf */
+/** @var string $baseUrl */
 ?>
 <!DOCTYPE html>
 <html dir="ltr">
@@ -49,13 +50,41 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer onerror="nuruTurnstileUnavailable()"></script>
     <?php endif; ?>
 
-    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/images/favicon.png" />
-    <link href="../../dist/css/style.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= $baseUrl ?>/assets/images/favicon.png" />
+    <link href="<?= $baseUrl ?>/dist/css/style.min.css" rel="stylesheet" />
 
     <!-- Font Awesome (for icons) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" integrity="sha384-/o6I2CkkWC//PSjvWC/eYN7l3xM3tJm8ZzVkCOfp//W05QcE3mlGskpoHB6XqI+B" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
+      /* Compact auth card - narrower column, right-sized controls, matched
+         across the login page and the buyer/seller/agent application forms
+         so none of them feel like an oversized full-width admin screen. */
+      .auth-card-col {
+        max-width: 460px;
+      }
+
+      #loginform .card-body,
+      #recoverform .card-body {
+        padding: 2rem;
+      }
+
+      #loginform h2 {
+        font-size: 1.5rem;
+      }
+
+      #loginForm .form-control,
+      #recoverForm .form-control {
+        height: calc(2.5rem + 2px);
+        font-size: 0.95rem;
+      }
+
+      #loginForm .btn,
+      #recoverForm .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 0.95rem;
+      }
+
       /* Registration Flex Cards */
       #roleSelection {
         display: flex;
@@ -67,20 +96,25 @@
       .role-selection-card {
         transition: all 0.3s ease;
         cursor: pointer;
-        flex: 1 1 280px;
-        max-width: 320px;
+        flex: 1 1 220px;
+        max-width: 240px;
         border: 1px solid #e0e0e0;
       }
 
       .role-selection-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        border-color: #2196f3;
+        border-color: var(--bs-primary, #7460ee);
       }
 
       .role-selection-card .role-icon {
-        font-size: 2.5rem;
-        color: #2196f3;
+        font-size: 2rem;
+        color: var(--bs-primary, #7460ee);
+      }
+
+      .role-selection-card .btn {
+        padding: 0.45rem 1rem;
+        font-size: 0.9rem;
       }
 
       /* Hide forms by default */
@@ -89,7 +123,6 @@
         display: none;
       }
 
-      /* Consistent card shadow and spacing */
       #registerform .card-body {
         padding: 2rem 1.5rem;
       }
@@ -124,7 +157,7 @@
           fill="#1e88e5"
           fill-rule="evenodd"
           clip-rule="evenodd"
-          d="M16 25V17H14V25H12C10.3431 25 9 26.3431 9 28V34C9 35.6569 10.3431 37 12 37H18C19.6569 37 21 35.6569 21 34V28C21 26.3431 19.6569 25 18 25H16Z"
+          d="M16 25V17H14V25H12C10.3431 25 9 26.3431 9 28V34C9 35.6569 10.3431 37 12 37H18C19.6569 37 21 35.6569 21 34V28C21 26.3431 19.6569 25 18 25H16ZM11 28C11 27.4477 11.4477 27 12 27H18C18.5523 27 19 27.4477 19 28V34C19 34.5523 18.5523 35 18 35H12C11.4477 35 11 34.5523 11 34V28Z"
         ></path>
       </svg>
     </div>
@@ -135,7 +168,7 @@
       <div class="col-lg-4 col-xl-3 bg-info auth-box-2 on-sidebar">
         <div class="h-100 d-flex align-items-center justify-content-center text-center text-white">
           <div>
-            <img src="../../assets/images/logo-light-icon.png" alt="logo" style="width: 350px;"/>
+            <img src="<?= $baseUrl ?>/assets/images/logo-light-icon.png" alt="logo" style="width: 260px;"/>
             <h2 class="fw-light">
                <span class="font-weight-medium"></span>
             </h2>
@@ -147,7 +180,7 @@
       <!-- Right Form Section -->
       <div class="col-lg-8 col-xl-9 d-flex align-items-center justify-content-center">
         <div class="row justify-content-center w-100 mt-4 mt-lg-0">
-          <div class="col-xl-8 col-lg-10 col-md-10">
+          <div class="col-11 col-sm-9 col-md-7 col-lg-6 auth-card-col">
 
             <!-- REGISTER FORM (Flex Layout) -->
             <div class="card" id="registerform">
@@ -164,7 +197,7 @@
                       </div>
                       <h4 class="card-title mb-3">Buyer</h4>
                       <p class="card-text text-muted flex-grow-1">Complete your buyer application to get started.</p>
-                      <a href="buyer/index.php" class="btn btn-primary btn-lg w-100 mt-3">
+                      <a href="<?= $baseUrl ?>/html/material/buyer/index.php" class="btn btn-primary w-100 mt-3">
 							<i class="fas fa-arrow-right me-2"></i> Start Application
 						</a>
                     </div>
@@ -178,7 +211,7 @@
                       </div>
                       <h4 class="card-title mb-3">Seller</h4>
                       <p class="card-text text-muted flex-grow-1">Register as a seller to list your property.</p>
-						<a href="seller/index.php" class="btn btn-primary btn-lg w-100 mt-3">
+						<a href="<?= $baseUrl ?>/html/material/seller/index.php" class="btn btn-primary w-100 mt-3">
 							<i class="fas fa-arrow-right me-2"></i>List Property
 						</a>
                     </div>
@@ -192,7 +225,7 @@
                       </div>
                       <h4 class="card-title mb-3">Agent</h4>
                       <p class="card-text text-muted flex-grow-1">Join our agent network to manage properties.</p>
-						<a href="agent/index.php" class="btn btn-primary btn-lg w-100 mt-3">
+						<a href="<?= $baseUrl ?>/html/material/agent/index.php" class="btn btn-primary w-100 mt-3">
 							<i class="fas fa-arrow-right me-2"></i> Start Application
 						</a>
                     </div>
@@ -251,7 +284,7 @@
 					<div id="loginMessage" class="alert d-none"></div>
 
                   <div class="d-grid mt-4 pt-2">
-                    <button type="submit" class="btn btn-info btn-lg px-4"<?= TURNSTILE_ENABLED ? ' disabled aria-disabled="true"' : '' ?>>Sign in</button>
+                    <button type="submit" class="btn btn-info"<?= TURNSTILE_ENABLED ? ' disabled aria-disabled="true"' : '' ?>>Sign in</button>
                   </div>
                 </form>
               </div>
@@ -269,9 +302,9 @@
                     <label for="recover-email">Email</label>
                   </div>
                   <div id="recoverMessage" class="alert d-none" role="status"></div>
-                  <div class="d-flex align-items-stretch button-group">
-                    <button type="submit" class="btn btn-info btn-lg px-4">Send reset link</button>
-                    <a href="javascript:void(0)" id="to-login" class="btn btn-lg btn-light-secondary text-secondary font-weight-medium">Cancel</a>
+                  <div class="d-flex align-items-stretch button-group gap-2">
+                    <button type="submit" class="btn btn-info">Send reset link</button>
+                    <a href="javascript:void(0)" id="to-login" class="btn btn-light-secondary text-secondary font-weight-medium">Cancel</a>
                   </div>
                 </form>
               </div>
@@ -283,8 +316,8 @@
     </div>
 
     <!-- JS -->
-    <script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       $(".preloader").fadeOut();
 
@@ -330,6 +363,8 @@
     </script>
 	<script>
 $(document).ready(function () {
+  const baseUrl = <?= json_encode($baseUrl) ?>;
+
   const validateLoginFields = function () {
     const emailField = document.getElementById("tb-email");
     const passwordField = document.getElementById("text-password");
@@ -388,7 +423,7 @@ $(document).ready(function () {
     $("#recoverMessage").addClass("d-none").removeClass("alert-danger alert-success");
 
     $.ajax({
-      url: "./config/request-password-reset.php",
+      url: baseUrl + "/html/material/config/request-password-reset.php",
       type: "POST",
       dataType: "json",
       data: $form.serialize(),
@@ -461,7 +496,9 @@ $(document).ready(function () {
     }
 
     $.ajax({
-      url: "./config/login.php",
+      // Self-submit: this page (whether reached via /login or the legacy
+      // html/material/authentication-login.php URL) handles its own POST.
+      url: window.location.pathname + window.location.search,
       type: "POST",
       dataType: "json",
       data: {

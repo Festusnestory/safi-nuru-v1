@@ -30,6 +30,12 @@ RewriteRule ^about/?$ about.php [L,QSA]
 RewriteRule ^contact/?$ contact.php [L,QSA]
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
+# Clean portal routes, dispatched through the app/Core/Router front
+# controller (public/index.php). The old html/material/*.php URLs keep
+# working unchanged - these are additive, not replacements.
+RewriteRule ^login/?$ public/index.php?__route=login [L,QSA]
+RewriteRule ^logout/?$ public/index.php?__route=logout [L,QSA]
+
 # Uploaded content is stored under web-visible folders for image/video
 # previews. Never let any script-like extension in those folders reach the
 # PHP handler, even if an upstream MIME check is later weakened.

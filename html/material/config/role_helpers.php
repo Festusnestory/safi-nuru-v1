@@ -14,11 +14,24 @@ function currentRole(): string
 function portalPath(string $path): string
 {
     $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/html/material/');
-    $marker = '/html/material';
-    $position = strpos($scriptName, $marker);
-    $basePath = $position === false ? '' : substr($scriptName, 0, $position + strlen($marker));
+    $materialMarker = '/html/material';
+    $materialPosition = strpos($scriptName, $materialMarker);
+    if ($materialPosition !== false) {
+        $basePath = substr($scriptName, 0, $materialPosition + strlen($materialMarker));
+        return $basePath . '/' . ltrim($path, '/');
+    }
 
-    return $basePath . '/' . ltrim($path, '/');
+    // A request dispatched through the app/Core/Router front controller
+    // (public/index.php) has no /html/material in SCRIPT_NAME even though
+    // the target page still physically lives there - route to it explicitly.
+    $routerMarker = '/public/index.php';
+    $routerPosition = strpos($scriptName, $routerMarker);
+    if ($routerPosition !== false) {
+        $appBase = substr($scriptName, 0, $routerPosition);
+        return $appBase . '/html/material/' . ltrim($path, '/');
+    }
+
+    return '/' . ltrim($path, '/');
 }
 
 /** Admin or manager: full operational visibility (manager excludes System pages only). */
