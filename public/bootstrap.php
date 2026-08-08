@@ -34,80 +34,32 @@ function csrfPublicToken(): string
     return $_SESSION['nuru_public_csrf'];
 }
 
+/**
+ * Property queries/formatting live in App\Models\PublicProperty now (same
+ * SQL, moved verbatim). require_once here (rather than in every call site)
+ * since public/bootstrap.php's own callers use plain `require`, not the
+ * app/autoload.php entry point.
+ */
+require_once __DIR__ . '/../app/autoload.php';
+
 function publicPropertyImage(?string $path): string
 {
-    if (!$path) {
-        return 'public/assets/images/nuru-hero.png';
-    }
-    $normalized = ltrim(str_replace('\\', '/', $path), '/');
-    if (str_contains($normalized, '..')) {
-        return 'public/assets/images/nuru-hero.png';
-    }
-    if (str_starts_with($normalized, 'html/material/')) {
-        return $normalized;
-    }
-    if (str_starts_with($normalized, 'uploads/')) {
-        return 'html/material/' . $normalized;
-    }
-    return 'html/material/uploads/seller/property_images/' . basename($normalized);
+    return \App\Models\PublicProperty::imagePath($path);
 }
 
 function publicProperties(PDO $pdo, array $filters = [], ?int $limit = null): array
 {
-    $where = ["sp.property_status = 'available'", "sa.status IN ('approved','completed')"];
-    $params = [];
-    if (!empty($filters['id'])) {
-        $where[] = 'sp.id = :id';
-        $params[':id'] = (int)$filters['id'];
-    }
-    if (!empty($filters['q'])) {
-        $where[] = '(sp.property_town LIKE :q OR sp.property_suburb LIKE :q OR sp.property_region LIKE :q OR sp.property_detail_type LIKE :q)';
-        $params[':q'] = '%' . trim((string)$filters['q']) . '%';
-    }
-    if (!empty($filters['type'])) {
-        $where[] = 'sp.property_detail_type = :type';
-        $params[':type'] = $filters['type'];
-    }
-    if (!empty($filters['region'])) {
-        $where[] = 'sp.property_region = :region';
-        $params[':region'] = $filters['region'];
-    }
-    if (!empty($filters['max_price']) && is_numeric($filters['max_price'])) {
-        $where[] = 'sp.selling_price <= :max_price';
-        $params[':max_price'] = (float)$filters['max_price'];
-    }
-    $sql = "SELECT sp.*, sa.application_number, sst.sale_type, sst.property_type,
-            (SELECT spi.file_path FROM seller_property_images spi WHERE spi.propertyId = sp.id ORDER BY spi.is_primary DESC, spi.image_order ASC, spi.id ASC LIMIT 1) AS primary_image,
-            (SELECT spi.alt_text FROM seller_property_images spi WHERE spi.propertyId = sp.id ORDER BY spi.is_primary DESC, spi.image_order ASC, spi.id ASC LIMIT 1) AS image_alt
-        FROM seller_properties sp
-        INNER JOIN seller_applications sa ON sa.id = sp.application_id
-        LEFT JOIN seller_sale_type sst ON sst.application_id = sp.application_id
-        WHERE " . implode(' AND ', $where) . " ORDER BY COALESCE(sp.listing_date, sp.created_at) DESC";
-    if ($limit !== null) {
-        $sql .= ' LIMIT ' . max(1, min($limit, 24));
-    }
-    try {
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchAll();
-    } catch (Throwable $error) {
-        error_log('Public property query failed: ' . $error->getMessage());
-        return [];
-    }
+    return (new \App\Models\PublicProperty($pdo))->search($filters, $limit);
 }
 
 function publicPropertyById(PDO $pdo, int $id): ?array
 {
-    if ($id < 1) {
-        return null;
-    }
-    $rows = publicProperties($pdo, ['id' => $id], 1);
-    return $rows[0] ?? null;
+    return (new \App\Models\PublicProperty($pdo))->find($id);
 }
 
 function propertyTypes(): array
 {
-    return ['Single Residential', 'General Residential', 'Farm', 'Commercial/Business', 'Institutional'];
+    return \App\Models\PublicProperty::types();
 }
 
 function renderHeader(string $title, string $description, string $active = ''): void

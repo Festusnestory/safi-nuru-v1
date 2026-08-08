@@ -1,0 +1,1 @@
+<main id="main"><section class="page-hero"><p class="eyebrow">PROPERTY UNAVAILABLE</p><h1>This listing has<br>moved on.</h1><p>Browse our current collection or speak with us about similar opportunities.</p><a class="button button-dark" href="properties.php">View properties</a></section></main>

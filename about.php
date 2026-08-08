@@ -1,8 +1,4 @@
-<?php require __DIR__ . '/public/bootstrap.php'; renderHeader('About', 'Nuru brings local knowledge, careful guidance and a human approach to Namibian real estate.', 'about'); ?>
-<main id="main">
-  <section class="page-hero about-hero"><p class="eyebrow">ABOUT NURU</p><h1>Clarity for every<br><em>property decision.</em></h1><p>Nuru means light. That idea shapes how we work: making a complex property journey easier to understand, navigate, and trust.</p></section>
-  <section class="section split-story"><div><p class="eyebrow">OUR PURPOSE</p><h2>Real estate with<br>more humanity.</h2></div><div><p class="lead">We built Nuru around a simple belief: good property advice should feel clear, attentive and grounded in your reality.</p><p>Our connected system brings buyers, sellers and advisors into one thoughtful process—reducing uncertainty while keeping people at the centre of every decision.</p></div></section>
-  <section class="values section-dark"><p class="eyebrow light">WHAT GUIDES US</p><div class="value-grid"><div><span>01</span><h2>Clarity</h2><p>Straight answers, visible progress and no unnecessary complexity.</p></div><div><span>02</span><h2>Care</h2><p>We listen first and shape the process around your priorities.</p></div><div><span>03</span><h2>Local insight</h2><p>Knowledge of Namibia’s places, people and property realities.</p></div><div><span>04</span><h2>Stewardship</h2><p>Responsible guidance for decisions with long-term consequences.</p></div></div></section>
-  <section class="cta-panel"><p class="eyebrow light">LET’S BEGIN</p><h2>Your property story<br>starts here.</h2><a class="button button-gold" href="contact.php">Meet your next step →</a></section>
-</main>
-<?php renderFooter(); ?>
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/app/autoload.php';
+(new \App\Controllers\Public\SiteController())->about();
