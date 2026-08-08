@@ -85,36 +85,57 @@
         font-size: 0.95rem;
       }
 
-      /* Registration Flex Cards */
-      #roleSelection {
+      /* Registration options - compact horizontal rows instead of tall
+         cards, so all three fit in view without scrolling the auth card. */
+      .role-selection-option {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1.5rem;
-      }
-
-      .role-selection-card {
-        transition: all 0.3s ease;
-        cursor: pointer;
-        flex: 1 1 220px;
-        max-width: 240px;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 0.75rem 1rem;
         border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s ease;
       }
 
-      .role-selection-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      .role-selection-option:hover {
         border-color: var(--bs-primary, #7460ee);
+        background-color: rgba(116, 96, 238, 0.04);
+        color: inherit;
       }
 
-      .role-selection-card .role-icon {
-        font-size: 2rem;
+      .role-option-icon {
+        flex-shrink: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(116, 96, 238, 0.1);
         color: var(--bs-primary, #7460ee);
+        font-size: 1.1rem;
       }
 
-      .role-selection-card .btn {
-        padding: 0.45rem 1rem;
-        font-size: 0.9rem;
+      .role-option-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.3;
+      }
+
+      .role-option-text strong {
+        font-size: 0.975rem;
+      }
+
+      .role-option-text small {
+        color: #6c757d;
+      }
+
+      .role-option-arrow {
+        margin-left: auto;
+        color: #adb5bd;
+        font-size: 0.85rem;
       }
 
       /* Hide forms by default */
@@ -188,48 +209,33 @@
                 <h2 class="mb-2">Sign Up Form</h2>
                 <p class="text-muted fs-5 mb-4">Choose your account type below</p>
 
-                <div id="roleSelection">
-                  <!-- Buyer -->
-                  <div class="card role-selection-card" data-role="buyer">
-                    <div class="card-body text-center p-4 d-flex flex-column">
-                      <div class="role-icon mb-3">
-                        <i class="fas fa-user-tie"></i>
-                      </div>
-                      <h4 class="card-title mb-3">Buyer</h4>
-                      <p class="card-text text-muted flex-grow-1">Complete your buyer application to get started.</p>
-                      <a href="<?= $baseUrl ?>/buyer" class="btn btn-primary w-100 mt-3">
-							<i class="fas fa-arrow-right me-2"></i> Start Application
-						</a>
-                    </div>
-                  </div>
+                <div id="roleSelection" class="d-grid gap-2">
+                  <a href="<?= $baseUrl ?>/buyer" class="role-selection-option" data-role="buyer">
+                    <span class="role-option-icon"><i class="fas fa-user-tie"></i></span>
+                    <span class="role-option-text">
+                      <strong>Buyer</strong>
+                      <small>Start your buyer application</small>
+                    </span>
+                    <i class="fas fa-chevron-right role-option-arrow"></i>
+                  </a>
 
-                  <!-- Seller -->
-                  <div class="card role-selection-card" data-role="seller">
-                    <div class="card-body text-center p-4 d-flex flex-column">
-                      <div class="role-icon mb-3">
-                        <i class="fas fa-home"></i>
-                      </div>
-                      <h4 class="card-title mb-3">Seller</h4>
-                      <p class="card-text text-muted flex-grow-1">Register as a seller to list your property.</p>
-						<a href="<?= $baseUrl ?>/seller" class="btn btn-primary w-100 mt-3">
-							<i class="fas fa-arrow-right me-2"></i>List Property
-						</a>
-                    </div>
-                  </div>
+                  <a href="<?= $baseUrl ?>/seller" class="role-selection-option" data-role="seller">
+                    <span class="role-option-icon"><i class="fas fa-home"></i></span>
+                    <span class="role-option-text">
+                      <strong>Seller</strong>
+                      <small>List a property for sale</small>
+                    </span>
+                    <i class="fas fa-chevron-right role-option-arrow"></i>
+                  </a>
 
-                  <!-- Agent -->
-                  <div class="card role-selection-card" data-role="agent">
-                    <div class="card-body text-center p-4 d-flex flex-column">
-                      <div class="role-icon mb-3">
-                        <i class="fas fa-handshake"></i>
-                      </div>
-                      <h4 class="card-title mb-3">Agent</h4>
-                      <p class="card-text text-muted flex-grow-1">Join our agent network to manage properties.</p>
-						<a href="<?= $baseUrl ?>/agent" class="btn btn-primary w-100 mt-3">
-							<i class="fas fa-arrow-right me-2"></i> Start Application
-						</a>
-                    </div>
-                  </div>
+                  <a href="<?= $baseUrl ?>/agent" class="role-selection-option" data-role="agent">
+                    <span class="role-option-icon"><i class="fas fa-handshake"></i></span>
+                    <span class="role-option-text">
+                      <strong>Agent</strong>
+                      <small>Join the Nuru agent network</small>
+                    </span>
+                    <i class="fas fa-chevron-right role-option-arrow"></i>
+                  </a>
                 </div>
 
                 <div class="mt-4">
