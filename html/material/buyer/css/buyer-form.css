@@ -1,0 +1,449 @@
+/* Buyer Application Form Styles */
+
+:root {
+    --primary-color: #0066cc;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+}
+
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+.required::after {
+    content: ' *';
+    color: var(--danger-color);
+}
+
+/* Form Step Styles */
+.form-step {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.form-step.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Progress Indicator Styles */
+.progress-container {
+    position: relative;
+}
+
+.step-label {
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.step-label.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    background-color: rgba(0, 102, 204, 0.1);
+}
+
+.step-label.completed {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.step-label:hover {
+    background-color: rgba(0, 102, 204, 0.05);
+}
+
+/* Form Control Enhancements */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: var(--success-color);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.75-.75L4.5 4.5 7 2l.75.75L4.5 6z'/%3e%3c/svg%3e");
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--danger-color);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 5.8 1.4 1.4M7.2 5.8l-1.4 1.4'/%3e%3c/svg%3e");
+}
+
+/* File Upload Styling */
+.file-upload-container {
+    display: block;
+    width: 100%;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-upload-container:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(0, 102, 204, 0.02);
+}
+
+.file-upload-container:focus-visible {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(0, 102, 204, 0.2);
+    outline: 0;
+}
+
+.file-upload-container.has-files {
+    border-color: var(--success-color);
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+.file-upload-container.is-invalid {
+    border-color: var(--danger-color);
+    background-color: rgba(220, 53, 69, 0.04);
+}
+
+.file-upload-container.drag-over {
+    border-color: var(--primary-color);
+    background-color: rgba(0, 102, 204, 0.05);
+}
+
+.file-upload-icon {
+    font-size: 3rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+
+.file-list {
+    margin-top: 1rem;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.file-item .file-info {
+    display: flex;
+    align-items: center;
+}
+
+.file-item .file-icon {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.file-item .remove-file {
+    color: var(--danger-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.file-item .remove-file:hover {
+    color: #c82333;
+}
+
+/* Property Areas Styling */
+.preferred-area-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f8f9fa;
+}
+
+.preferred-area-item .remove-area {
+    color: var(--danger-color);
+    cursor: pointer;
+    float: right;
+    font-size: 1.2rem;
+    margin-top: -0.5rem;
+    margin-right: -0.5rem;
+    padding: 0.25rem;
+}
+
+.preferred-area-item .remove-area:hover {
+    color: #c82333;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-spinner {
+    text-align: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Enhancements */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+}
+
+.btn-outline-secondary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+}
+
+/* Card Enhancements */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+.alert-info {
+    background-color: rgba(23, 162, 184, 0.1);
+    color: #0c5460;
+}
+
+/* Employment Type Specific Styling */
+.employment-type-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Marital Status Conditional Fields */
+#spouseDetails {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Signature Section */
+.signature-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.signature-options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.signature-option {
+    flex: 1;
+    text-align: center;
+    padding: 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.signature-option:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(0, 102, 204, 0.05);
+}
+
+.signature-option.active {
+    border-color: var(--primary-color);
+    background-color: rgba(0, 102, 204, 0.1);
+    color: var(--primary-color);
+}
+
+.signature-option i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* OTP Input Styling */
+.otp-input {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.5rem;
+}
+
+/* Declaration Checkboxes */
+.declaration-item {
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background-color: white;
+}
+
+.declaration-item:hover {
+    background-color: #f8f9fa;
+}
+
+.declaration-item.checked {
+    border-color: var(--success-color);
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .step-label {
+        font-size: 0.7rem;
+        padding: 2px 4px;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+    }
+    
+    .signature-options {
+        flex-direction: column;
+    }
+    
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .d-flex.justify-content-between > div {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .step-label {
+        display: none;
+    }
+    
+    .step-label.active {
+        display: inline-block;
+    }
+    
+    .progress-container .d-flex {
+        justify-content: center;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .loading-overlay,
+    .position-fixed,
+    .btn,
+    .modal {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+    }
+    
+    .form-step {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+    
+    .form-step:not(:first-child) {
+        page-break-before: always;
+    }
+}
+
+/* Accessibility Enhancements */
+.form-control:focus,
+.form-select:focus,
+.btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Error Highlight Animation */
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Success Highlight Animation */
+.pulse-success {
+    animation: pulseSuccess 1s ease-in-out;
+}
+
+@keyframes pulseSuccess {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}

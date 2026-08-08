@@ -1,0 +1,9 @@
+# Agent uploads may contain regulated personal data; serve them only via an
+# authenticated controller, never as static public files.
+Options -Indexes -ExecCGI
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Deny from all
+</IfModule>

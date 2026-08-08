@@ -1,0 +1,16 @@
+# Prevent users from accessing any files directly
+Deny from all
+
+# Disable directory listing
+Options -Indexes
+
+# Allow PHP scripts in your application to access files internally
+<FilesMatch "\.(php)$">
+    Allow from all
+</FilesMatch>
+
+# Allow specific file to be accessible if you need (optional)
+# Example:
+# <Files "download.php">
+#     Allow from all
+# </Files>

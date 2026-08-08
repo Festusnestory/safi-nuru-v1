@@ -1,0 +1,4 @@
+# Deny all direct web access to this directory. Debug logs and submission
+# markers may contain PII from form submissions and must never be servable
+# by URL, regardless of file extension.
+Require all denied

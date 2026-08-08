@@ -1,0 +1,31 @@
+/node_modules
+.DS_Store
+
+# Claude Code local tooling config
+/.claude/
+/.codex-ssh-askpass.cmd
+
+# Local DB backups and full data dumps - contain real PII, never commit
+/_db_backup/
+/nuru (16).sql
+
+# User-uploaded documents (ID scans, bank statements, etc.) - real PII, never
+# commit. Ignoring the directory itself (rather than its contents) would
+# also hide the .htaccess exceptions below from git, since it stops
+# descending into an excluded directory entirely - use a glob on the
+# contents instead so the negation actually takes effect. The .htaccess
+# files are the security fix disabling PHP execution / denying access to
+# these directories - they must ship with the deployed code, unlike the PII
+# that lives here at runtime.
+/html/material/uploads/*
+!/html/material/uploads/.htaccess
+
+/html/material/api/uploads/*
+!/html/material/api/uploads/.htaccess
+
+/html/material/agent/uploads/*
+!/html/material/agent/uploads/.htaccess
+!/html/material/agent/uploads/index.php
+
+/html/material/logs/*
+!/html/material/logs/.htaccess
