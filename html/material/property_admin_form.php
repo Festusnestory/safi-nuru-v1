@@ -123,7 +123,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $propertyType = propertyFormText('property_detail_type');
     $landType = propertyFormText('land_type');
     $landSize = propertyFormDecimal('land_size');
-    $sellingPrice = propertyFormDecimal('selling_price');
+    $salePricingType = propertyFormText('sale_pricing_type');
+    $plotSellingPrice = propertyFormDecimal('plot_selling_price');
+    $constructionAmount = propertyFormDecimal('construction_amount');
+    $propertySellingPrice = propertyFormDecimal('property_selling_price');
+    $agentCommissionFees = propertyFormDecimal('agent_commission_fees');
+    $sellingPrice = match ($salePricingType) {
+        'plot_and_plan' => ($plotSellingPrice ?? 0) + ($constructionAmount ?? 0) + ($agentCommissionFees ?? 0),
+        'existing_house' => ($propertySellingPrice ?? 0) + ($agentCommissionFees ?? 0),
+        default => 0.0,
+    };
+    $sellingPrice = $sellingPrice > 0 ? $sellingPrice : null;
     $houseSize = propertyFormDecimal('house_size');
     $rooms = propertyFormInteger('number_of_rooms');
     $bathrooms = propertyFormInteger('number_of_bathrooms');
@@ -150,8 +160,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($landSize === null || $landSize <= 0 || $landSize > 9999999999999.99) {
         $errors[] = 'Land size must be greater than zero.';
     }
-    if ($sellingPrice === null || $sellingPrice <= 0 || $sellingPrice > 9999999999999.99) {
-        $errors[] = 'Selling price must be greater than zero.';
+    if (!in_array($salePricingType, ['plot_and_plan', 'existing_house'], true)) {
+        $errors[] = 'Select a Sale Type (Plot & Plan or Existing House).';
+    }
+    if ($sellingPrice === null || $sellingPrice > 9999999999999.99) {
+        $errors[] = 'Total selling price must be greater than zero - check the Sale Type amounts above.';
     }
     if ($houseSize !== null && ($houseSize < 0 || $houseSize > 9999999999999.99)) {
         $errors[] = 'House size must be a valid positive value.';
@@ -213,6 +226,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     application_id,
                     property_detail_type,
                     land_type,
+                    sale_pricing_type,
+                    plot_selling_price,
+                    construction_amount,
+                    property_selling_price,
+                    agent_commission_fees,
                     land_size,
                     selling_price,
                     house_size,
@@ -227,12 +245,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     property_town,
                     property_status,
                     listing_date
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())'
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())'
             );
             $insert->execute([
                 (int)$selectedSeller['id'],
                 $propertyType,
                 $landType,
+                $salePricingType,
+                $plotSellingPrice,
+                $constructionAmount,
+                $propertySellingPrice,
+                $agentCommissionFees,
                 $landSize,
                 $sellingPrice,
                 $houseSize,
@@ -397,14 +420,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </select>
                             </div>
                             <div class="col-md-6 col-xl-3 mb-3">
+                                <label class="form-label required" for="sale-pricing-type">Sale Type</label>
+                                <select class="form-select" id="sale-pricing-type" name="sale_pricing_type" required>
+                                    <option value="">Select Sale Type</option>
+                                    <option value="plot_and_plan" <?= propertyFormText('sale_pricing_type') === 'plot_and_plan' ? 'selected' : '' ?>>Plot &amp; Plan</option>
+                                    <option value="existing_house" <?= propertyFormText('sale_pricing_type') === 'existing_house' ? 'selected' : '' ?>>Existing House</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row" id="plot-and-plan-pricing" style="display:none;">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required" for="plot-selling-price">Plot selling price (N$)</label>
+                                <input class="form-control sale-pricing-input" id="plot-selling-price" name="plot_selling_price" type="number" min="0.01" max="9999999999999.99" step="0.01"
+                                       value="<?= propertyFormHtml($_POST['plot_selling_price'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required" for="construction-amount">Construction amount (N$)</label>
+                                <input class="form-control sale-pricing-input" id="construction-amount" name="construction_amount" type="number" min="0.01" max="9999999999999.99" step="0.01"
+                                       value="<?= propertyFormHtml($_POST['construction_amount'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required" for="agent-commission-fees-pp">Agent commission fees (N$)</label>
+                                <input class="form-control sale-pricing-input" id="agent-commission-fees-pp" name="agent_commission_fees" type="number" min="0" max="9999999999999.99" step="0.01"
+                                       value="<?= propertyFormHtml($_POST['agent_commission_fees'] ?? '') ?>">
+                            </div>
+                        </div>
+
+                        <div class="row" id="existing-house-pricing" style="display:none;">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required" for="property-selling-price">Property selling price (N$)</label>
+                                <input class="form-control sale-pricing-input" id="property-selling-price" name="property_selling_price" type="number" min="0.01" max="9999999999999.99" step="0.01"
+                                       value="<?= propertyFormHtml($_POST['property_selling_price'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required" for="agent-commission-fees-eh">Agent commission fees (N$)</label>
+                                <input class="form-control sale-pricing-input" id="agent-commission-fees-eh" name="agent_commission_fees" type="number" min="0" max="9999999999999.99" step="0.01"
+                                       value="<?= propertyFormHtml($_POST['agent_commission_fees'] ?? '') ?>">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-xl-3 mb-3">
                                 <label class="form-label required" for="land-size">Land size (m²)</label>
                                 <input class="form-control" id="land-size" name="land_size" type="number" min="0.01" max="9999999999999.99" step="0.01"
                                        value="<?= propertyFormHtml($_POST['land_size'] ?? '') ?>" required>
                             </div>
                             <div class="col-md-6 col-xl-3 mb-3">
-                                <label class="form-label required" for="selling-price">Selling price (N$)</label>
-                                <input class="form-control" id="selling-price" name="selling_price" type="number" min="0.01" max="9999999999999.99" step="0.01"
-                                       value="<?= propertyFormHtml($_POST['selling_price'] ?? '') ?>" required>
+                                <label class="form-label required" for="selling-price">Total selling price (N$)</label>
+                                <input class="form-control" id="selling-price" name="selling_price_display" type="text" readonly
+                                       value="<?= propertyFormHtml($sellingPrice !== null ? number_format($sellingPrice, 2) : '') ?>">
+                                <div class="form-text">Calculated automatically from the Sale Type fields above.</div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="house-size">House size (m²)</label>
@@ -489,5 +555,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="../../dist/js/sidebarmenu.js?v=20260720"></script>
 <script src="../../dist/js/feather.min.js"></script>
 <script src="../../dist/js/custom.min.js"></script>
+<script>
+(function () {
+    var typeSelect = document.getElementById('sale-pricing-type');
+    var plotSection = document.getElementById('plot-and-plan-pricing');
+    var houseSection = document.getElementById('existing-house-pricing');
+    var totalField = document.getElementById('selling-price');
+    if (!typeSelect || !totalField) return;
+
+    function amount(id) {
+        var field = document.getElementById(id);
+        var value = field ? parseFloat(field.value) : NaN;
+        return isNaN(value) ? 0 : value;
+    }
+
+    function toggleSection(section, show) {
+        if (!section) return;
+        section.style.display = show ? '' : 'none';
+        section.querySelectorAll('.sale-pricing-input').forEach(function (field) {
+            if (show) {
+                field.setAttribute('required', 'required');
+            } else {
+                field.removeAttribute('required');
+                field.value = '';
+            }
+        });
+    }
+
+    function recalculate() {
+        var total = 0;
+        if (typeSelect.value === 'plot_and_plan') {
+            total = amount('plot-selling-price') + amount('construction-amount') + amount('agent-commission-fees-pp');
+        } else if (typeSelect.value === 'existing_house') {
+            total = amount('property-selling-price') + amount('agent-commission-fees-eh');
+        }
+        totalField.value = total > 0 ? total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '';
+    }
+
+    typeSelect.addEventListener('change', function () {
+        toggleSection(plotSection, typeSelect.value === 'plot_and_plan');
+        toggleSection(houseSection, typeSelect.value === 'existing_house');
+        recalculate();
+    });
+
+    document.querySelectorAll('.sale-pricing-input').forEach(function (field) {
+        field.addEventListener('input', recalculate);
+    });
+
+    // Restore the correct section/visibility on validation-failure redisplay
+    // (the selected Sale Type survives via PHP's `selected` attribute above).
+    if (typeSelect.value === 'plot_and_plan') {
+        toggleSection(plotSection, true);
+    } else if (typeSelect.value === 'existing_house') {
+        toggleSection(houseSection, true);
+    }
+    recalculate();
+})();
+</script>
 </body>
 </html>

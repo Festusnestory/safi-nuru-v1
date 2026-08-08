@@ -145,6 +145,47 @@ function sellerValidateText(string $field, mixed $value, int $maxLength, string 
     return $text;
 }
 
+/**
+ * Parses one Sale Type breakdown amount (as submitted from the form -
+ * possibly comma-formatted, possibly empty). Empty/non-numeric/negative
+ * values are treated as 0 rather than rejected outright, matching the
+ * client-side calculator's behavior - the >0 check on the resulting total
+ * is what actually enforces a real amount was provided.
+ */
+function sellerMoneyAmount(mixed $value): float {
+    $numeric = str_replace(',', '', (string)$value);
+    if (!is_numeric($numeric)) {
+        return 0.0;
+    }
+    $amount = (float)$numeric;
+    return $amount > 0 ? $amount : 0.0;
+}
+
+/**
+ * Server-side source of truth for Total Selling Price - never trust a
+ * client-submitted total, always recompute it from the individual
+ * breakdown amounts for the given Sale Type ('plot_and_plan' or
+ * 'existing_house'). Shared by both the Individual Seller and Property
+ * Developer (per house type) paths, since the formulas only differ by
+ * whether 'other_fees' applies.
+ *
+ *   plot_and_plan:   plot_selling_price + construction_amount + agent_commission_fees [+ other_fees]
+ *   existing_house:  property_selling_price + agent_commission_fees [+ other_fees]
+ */
+function sellerCalculateTotalSellingPrice(string $salePricingType, array $amounts): float {
+    $commission = sellerMoneyAmount($amounts['agent_commission_fees'] ?? null);
+    $otherFees = sellerMoneyAmount($amounts['other_fees'] ?? null);
+
+    return match ($salePricingType) {
+        'plot_and_plan' => sellerMoneyAmount($amounts['plot_selling_price'] ?? null)
+            + sellerMoneyAmount($amounts['construction_amount'] ?? null)
+            + $commission + $otherFees,
+        'existing_house' => sellerMoneyAmount($amounts['property_selling_price'] ?? null)
+            + $commission + $otherFees,
+        default => 0.0,
+    };
+}
+
 function validateSellerApplication(PDO $pdo, array &$data): void {
     $requiredStrings = [
         'surname', 'firstName', 'dateOfBirth', 'idType', 'idNumber', 'nationality', 'gender',
@@ -256,7 +297,7 @@ function validateSellerApplication(PDO $pdo, array &$data): void {
         throw new SellerValidationException('Please select a valid sale type.');
     }
     if ($data['saleType'] === 'Individual') {
-        foreach (['propertyDetailType', 'landType', 'landSize', 'sellingPrice', 'propertyStreetName', 'propertyRegion', 'propertyTown'] as $field) {
+        foreach (['propertyDetailType', 'landType', 'landSize', 'propertyStreetName', 'propertyRegion', 'propertyTown'] as $field) {
             if (trim((string)($data[$field] ?? '')) === '') {
                 throw new SellerValidationException('Please complete the property details.');
             }
@@ -267,17 +308,37 @@ function validateSellerApplication(PDO $pdo, array &$data): void {
             throw new SellerValidationException('Please select valid property details.');
         }
         $data['landSize'] = str_replace(',', '', (string)$data['landSize']);
-        $data['sellingPrice'] = str_replace(',', '', (string)$data['sellingPrice']);
-        if (!is_numeric($data['landSize']) || (float)$data['landSize'] <= 0
-            || !is_numeric($data['sellingPrice']) || (float)$data['sellingPrice'] <= 0) {
-            throw new SellerValidationException('Land size and selling price must be greater than zero.');
+        if (!is_numeric($data['landSize']) || (float)$data['landSize'] <= 0) {
+            throw new SellerValidationException('Land size must be greater than zero.');
+        }
+        if (!in_array($data['salePricingType'] ?? '', ['plot_and_plan', 'existing_house'], true)) {
+            throw new SellerValidationException('Please select a Sale Type (Plot & Plan or Existing House).');
+        }
+
+        // Total Selling Price is never trusted from the client - it is
+        // always recomputed here from the Sale Type breakdown fields so the
+        // stored total can't drift from (or be spoofed independently of) its
+        // components.
+        $data['sellingPrice'] = (string)sellerCalculateTotalSellingPrice($data['salePricingType'] ?? '', [
+            'plot_selling_price' => $data['plotSellingPrice'] ?? '',
+            'construction_amount' => $data['constructionAmount'] ?? '',
+            'property_selling_price' => $data['propertySellingPrice'] ?? '',
+            'agent_commission_fees' => $data['agentCommissionFees'] ?? '',
+        ]);
+        if ((float)$data['sellingPrice'] <= 0) {
+            throw new SellerValidationException('Selling price must be greater than zero.');
         }
     } else {
         $developments = $data['developments'] ?? null;
         if (!is_array($developments) || count($developments) < 1 || count($developments) > 20) {
             throw new SellerValidationException('Provide between 1 and 20 property developments.');
         }
-        foreach ($developments as $development) {
+        // By-reference throughout: the recomputed selling_price below must
+        // write back into $data['developments'] itself (a plain foreach
+        // copies each element by value, silently discarding the write) so
+        // the INSERT statements later see the server-computed total, not
+        // whatever the client originally submitted.
+        foreach ($data['developments'] as &$development) {
             $developmentName = sellerValidateText('development_name', $development['development_name'] ?? '', 150, 'Development name');
             $developmentTown = sellerValidateText('town', $development['town'] ?? '', 100, 'Development town');
             if ($developmentName === ''
@@ -289,19 +350,36 @@ function validateSellerApplication(PDO $pdo, array &$data): void {
             if (!is_array($houseTypes) || count($houseTypes) < 1 || count($houseTypes) > 25) {
                 throw new SellerValidationException('Each development needs between 1 and 25 house types.');
             }
-            foreach ($houseTypes as $houseType) {
-                foreach (['property_type', 'number_of_units', 'land_type', 'land_size', 'selling_price'] as $field) {
+            foreach ($development['house_types'] as &$houseType) {
+                foreach (['property_type', 'number_of_units', 'land_type', 'land_size'] as $field) {
                     if (trim((string)($houseType[$field] ?? '')) === '') {
                         throw new SellerValidationException('Complete every required house-type field.');
                     }
                 }
                 if (!ctype_digit((string)$houseType['number_of_units']) || (int)$houseType['number_of_units'] < 1
-                    || !is_numeric(str_replace(',', '', (string)$houseType['land_size']))
-                    || !is_numeric(str_replace(',', '', (string)$houseType['selling_price']))) {
+                    || !is_numeric(str_replace(',', '', (string)$houseType['land_size']))) {
                     throw new SellerValidationException('Provide valid development quantities and prices.');
                 }
+                if (!in_array($houseType['sale_pricing_type'] ?? '', ['plot_and_plan', 'existing_house'], true)) {
+                    throw new SellerValidationException('Select a House Type (Plot & Plan or Existing House) for every house type.');
+                }
+                // Total Selling Price is recomputed server-side from this
+                // house type's Sale Type breakdown, same as the individual
+                // seller path - never trusted from the client.
+                $houseType['selling_price'] = (string)sellerCalculateTotalSellingPrice($houseType['sale_pricing_type'] ?? '', [
+                    'plot_selling_price' => $houseType['plot_selling_price'] ?? '',
+                    'construction_amount' => $houseType['construction_amount'] ?? '',
+                    'property_selling_price' => $houseType['property_selling_price'] ?? '',
+                    'agent_commission_fees' => $houseType['agent_commission_fees'] ?? '',
+                    'other_fees' => $houseType['other_fees'] ?? '',
+                ]);
+                if ((float)$houseType['selling_price'] <= 0) {
+                    throw new SellerValidationException('Each house type\'s selling price must be greater than zero.');
+                }
             }
+            unset($houseType);
         }
+        unset($development);
     }
 
     $requiredDeclarations = ['certification', 'authorization', 'indemnification', 'commission', 'property_rights'];
@@ -820,8 +898,8 @@ try {
 
         $stmt = $pdo->prepare("
             INSERT INTO seller_properties
-            (application_id, property_detail_type, land_type, land_size, selling_price, house_size, number_of_rooms, number_of_bathrooms, additional_features, property_erf_no, property_street_name, property_suburb, property_location, property_region, property_town, listing_date)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            (application_id, property_detail_type, land_type, sale_pricing_type, plot_selling_price, construction_amount, property_selling_price, agent_commission_fees, land_size, selling_price, house_size, number_of_rooms, number_of_bathrooms, additional_features, property_erf_no, property_street_name, property_suburb, property_location, property_region, property_town, listing_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ");
 
         debugLog("Property details parameters: " . json_encode([
@@ -856,6 +934,11 @@ try {
             $application_id,
             $data['propertyDetailType'] ?? null,
             $data['landType'] ?? null,
+            $data['salePricingType'] ?: null,
+            sellerMoneyAmount($data['plotSellingPrice'] ?? null) ?: null,
+            sellerMoneyAmount($data['constructionAmount'] ?? null) ?: null,
+            sellerMoneyAmount($data['propertySellingPrice'] ?? null) ?: null,
+            sellerMoneyAmount($data['agentCommissionFees'] ?? null) ?: null,
             $data['landSize'] ?? null,
             $cleanSellingPrice ?? null,
             $data['houseSize'] ?? null,
@@ -937,14 +1020,14 @@ try {
 
         $houseTypeStmt = $pdo->prepare("
             INSERT INTO seller_development_house_types
-            (development_id, house_type_index, property_type, number_of_units, house_size, land_type, land_size, selling_price, number_of_rooms, number_of_bathrooms, additional_features, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            (development_id, house_type_index, property_type, number_of_units, house_size, land_type, sale_pricing_type, plot_selling_price, construction_amount, property_selling_price, agent_commission_fees, other_fees, land_size, selling_price, number_of_rooms, number_of_bathrooms, additional_features, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ");
 
         $unitStmt = $pdo->prepare("
             INSERT INTO seller_properties
-            (application_id, property_detail_type, land_type, land_size, house_size, selling_price, number_of_rooms, number_of_bathrooms, additional_features, property_street_name, property_suburb, property_location, property_region, property_town, development_house_type_id, listing_date)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            (application_id, property_detail_type, land_type, sale_pricing_type, plot_selling_price, construction_amount, property_selling_price, agent_commission_fees, other_fees, land_size, house_size, selling_price, number_of_rooms, number_of_bathrooms, additional_features, property_street_name, property_suburb, property_location, property_region, property_town, development_house_type_id, listing_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
         ");
 
         foreach ($data['developments'] as $devIndex => $development) {
@@ -980,6 +1063,13 @@ try {
                 $rawPrice = $houseType['selling_price'] ?? null;
                 $sellingPrice = $rawPrice !== null ? preg_replace('/[^\d.\-]/', '', (string)$rawPrice) : null;
 
+                $salePricingType = $houseType['sale_pricing_type'] ?? null;
+                $plotSellingPrice = sellerMoneyAmount($houseType['plot_selling_price'] ?? null) ?: null;
+                $constructionAmount = sellerMoneyAmount($houseType['construction_amount'] ?? null) ?: null;
+                $propertySellingPrice = sellerMoneyAmount($houseType['property_selling_price'] ?? null) ?: null;
+                $agentCommissionFees = sellerMoneyAmount($houseType['agent_commission_fees'] ?? null) ?: null;
+                $otherFees = sellerMoneyAmount($houseType['other_fees'] ?? null) ?: null;
+
                 $houseTypeStmt->execute([
                     $developmentId,
                     $htIndex + 1,
@@ -987,6 +1077,12 @@ try {
                     (int)($houseType['number_of_units'] ?? 1),
                     $houseSize !== '' ? $houseSize : null,
                     $houseType['land_type'] ?? null,
+                    $salePricingType,
+                    $plotSellingPrice,
+                    $constructionAmount,
+                    $propertySellingPrice,
+                    $agentCommissionFees,
+                    $otherFees,
                     $landSize !== '' ? $landSize : null,
                     $sellingPrice !== '' ? $sellingPrice : null,
                     $houseType['rooms'] ?? null,
@@ -1005,6 +1101,12 @@ try {
                         $application_id,
                         $mappedPropertyType,
                         $houseType['land_type'] ?? null,
+                        $salePricingType,
+                        $plotSellingPrice,
+                        $constructionAmount,
+                        $propertySellingPrice,
+                        $agentCommissionFees,
+                        $otherFees,
                         $landSize !== '' ? $landSize : null,
                         $houseSize !== '' ? $houseSize : null,
                         $sellingPrice !== '' ? $sellingPrice : null,

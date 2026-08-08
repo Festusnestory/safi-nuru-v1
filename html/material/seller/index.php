@@ -562,6 +562,70 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
                                 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
+                                        <label for="salePricingType" class="form-label required">Sale Type</label>
+                                        <select class="form-select" id="salePricingType" name="salePricingType" required>
+                                            <option value="">Select Sale Type</option>
+                                            <option value="plot_and_plan">Plot &amp; Plan</option>
+                                            <option value="existing_house">Existing House</option>
+                                        </select>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Plot & Plan pricing (shown when Sale Type = Plot & Plan) -->
+                                <div id="plotAndPlanPricing" class="d-none">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="plotSellingPrice" class="form-label required">Plot Selling Price</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">N$</span>
+                                                <input type="text" class="form-control money-input sale-pricing-input" id="plotSellingPrice" name="plotSellingPrice" inputmode="decimal">
+                                            </div>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="constructionAmount" class="form-label required">Construction Amount</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">N$</span>
+                                                <input type="text" class="form-control money-input sale-pricing-input" id="constructionAmount" name="constructionAmount" inputmode="decimal">
+                                            </div>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="agentCommissionFeesPP" class="form-label required">Agent Commission Fees</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">N$</span>
+                                                <input type="text" class="form-control money-input sale-pricing-input" id="agentCommissionFeesPP" name="agentCommissionFeesPP" inputmode="decimal">
+                                            </div>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Existing House pricing (shown when Sale Type = Existing House) -->
+                                <div id="existingHousePricing" class="d-none">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="propertySellingPrice" class="form-label required">Property Selling Price</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">N$</span>
+                                                <input type="text" class="form-control money-input sale-pricing-input" id="propertySellingPrice" name="propertySellingPrice" inputmode="decimal">
+                                            </div>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="agentCommissionFeesEH" class="form-label required">Agent Commission Fees</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">N$</span>
+                                                <input type="text" class="form-control money-input sale-pricing-input" id="agentCommissionFeesEH" name="agentCommissionFeesEH" inputmode="decimal">
+                                            </div>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label for="landSize" class="form-label required">Land Size</label>
                                         <div class="input-group">
                                             <input type="number" class="form-control" id="landSize" name="landSize" min="1" step="0.01" inputmode="decimal" aria-describedby="landSizeHelp" required>
@@ -571,13 +635,13 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
                                         <div class="form-text" id="landSizeHelp">Enter a value greater than 0 square metres.</div>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="sellingPrice" class="form-label required">Selling Price</label>
+                                        <label for="sellingPrice" class="form-label required">Total Selling Price</label>
                                         <div class="input-group">
                                             <span class="input-group-text">N$</span>
-                                            <input type="text" class="form-control money-input" id="sellingPrice" name="sellingPrice" inputmode="decimal" aria-describedby="sellingPriceHelp" required>
+                                            <input type="text" class="form-control money-input" id="sellingPrice" name="sellingPrice" inputmode="decimal" aria-describedby="sellingPriceHelp" required readonly>
                                         </div>
                                         <div class="invalid-feedback"></div>
-                                        <div class="form-text" id="sellingPriceHelp">Enter an amount greater than NAD 0.</div>
+                                        <div class="form-text" id="sellingPriceHelp">Calculated automatically from the Sale Type fields above.</div>
                                     </div>
                                 </div>
                                 

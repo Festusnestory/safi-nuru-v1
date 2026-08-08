@@ -84,7 +84,10 @@ const SellerForm = {
         
         // Sale type interactions
         this.setupSaleTypeInteractions();
-        
+
+        // Individual seller Sale Type pricing breakdown (Plot & Plan / Existing House)
+        this.setupSalePricingTypeInteractions();
+
         // Land type interactions
         this.setupLandTypeInteractions();
         
@@ -320,6 +323,125 @@ const SellerForm = {
                 }
             });
         }
+    },
+
+    // Setup individual-seller Sale Type pricing breakdown (Plot & Plan /
+    // Existing House) above Land Size / Total Selling Price. Total Selling
+    // Price is always computed from these fields, never typed directly.
+    setupSalePricingTypeInteractions() {
+        const typeSelect = document.getElementById('salePricingType');
+        if (!typeSelect) return;
+
+        const plotSection = document.getElementById('plotAndPlanPricing');
+        const houseSection = document.getElementById('existingHousePricing');
+
+        [plotSection, houseSection].forEach(section => {
+            section?.querySelectorAll('.sale-pricing-input').forEach(input => {
+                this.attachMoneyFormatting(input);
+                input.addEventListener('input', () => this.calculateIndividualTotalSellingPrice());
+            });
+        });
+
+        typeSelect.addEventListener('change', (e) => {
+            const isPlotAndPlan = e.target.value === 'plot_and_plan';
+            const isExistingHouse = e.target.value === 'existing_house';
+
+            this.toggleSalePricingSection(plotSection, isPlotAndPlan);
+            this.toggleSalePricingSection(houseSection, isExistingHouse);
+            this.calculateIndividualTotalSellingPrice();
+        });
+    },
+
+    // Show/hide one pricing sub-section, toggling `required` on its inputs
+    // (and clearing them when hidden) so hidden fields never block validation
+    // or contribute to the total - mirrors toggleIndividualPropertyStep()'s pattern.
+    toggleSalePricingSection(section, show) {
+        if (!section) return;
+        section.classList.toggle('d-none', !show);
+        section.querySelectorAll('input').forEach(field => {
+            if (show) {
+                field.setAttribute('required', 'required');
+            } else {
+                field.removeAttribute('required');
+                field.value = '';
+                FormValidation.clearFieldValidation(field);
+            }
+        });
+    },
+
+    // Parse a formatted money string ("1,234.50") back to a number, treating
+    // empty/invalid input as 0 so the total never becomes NaN.
+    parseMoneyValue(value) {
+        const parsed = parseFloat(String(value ?? '').replace(/[^\d.]/g, ''));
+        return isNaN(parsed) ? 0 : parsed;
+    },
+
+    // Recompute the individual seller's Total Selling Price from whichever
+    // Sale Type section is currently active. Never reads from a hidden section.
+    calculateIndividualTotalSellingPrice() {
+        const type = document.getElementById('salePricingType')?.value;
+        const totalField = document.getElementById('sellingPrice');
+        if (!totalField) return;
+
+        let total = 0;
+        if (type === 'plot_and_plan') {
+            total = this.parseMoneyValue(document.getElementById('plotSellingPrice')?.value)
+                + this.parseMoneyValue(document.getElementById('constructionAmount')?.value)
+                + this.parseMoneyValue(document.getElementById('agentCommissionFeesPP')?.value);
+        } else if (type === 'existing_house') {
+            total = this.parseMoneyValue(document.getElementById('propertySellingPrice')?.value)
+                + this.parseMoneyValue(document.getElementById('agentCommissionFeesEH')?.value);
+        }
+
+        totalField.value = total > 0 ? this.formatMoneyValue(total.toFixed(2)) : '';
+        FormValidation.clearFieldValidation(totalField);
+    },
+
+    // Wire a single House Type block's own Sale Type toggle + live total
+    // calculation. Scoped to htBlock so multiple House Types (across one or
+    // more Developments) never interfere with each other.
+    wireHouseTypePricing(htBlock) {
+        const typeSelect = htBlock.querySelector('.ht-sale-pricing-type');
+        const plotSection = htBlock.querySelector('.ht-plot-and-plan-pricing');
+        const houseSection = htBlock.querySelector('.ht-existing-house-pricing');
+        if (!typeSelect) return;
+
+        [plotSection, houseSection].forEach(section => {
+            section?.querySelectorAll('.ht-pricing-input').forEach(input => {
+                this.attachMoneyFormatting(input);
+                input.addEventListener('input', () => this.calculateHouseTypeTotalSellingPrice(htBlock));
+            });
+        });
+
+        typeSelect.addEventListener('change', (e) => {
+            const isPlotAndPlan = e.target.value === 'plot_and_plan';
+            const isExistingHouse = e.target.value === 'existing_house';
+
+            this.toggleSalePricingSection(plotSection, isPlotAndPlan);
+            this.toggleSalePricingSection(houseSection, isExistingHouse);
+            this.calculateHouseTypeTotalSellingPrice(htBlock);
+        });
+    },
+
+    // Recompute one House Type block's Total Selling Price (includes Other
+    // Fees, unlike the individual seller calculation).
+    calculateHouseTypeTotalSellingPrice(htBlock) {
+        const type = htBlock.querySelector('.ht-sale-pricing-type')?.value;
+        const totalField = htBlock.querySelector('[name="htSellingPrice"]');
+        if (!totalField) return;
+
+        const value = (name) => this.parseMoneyValue(htBlock.querySelector(`[name="${name}"]`)?.value);
+
+        let total = 0;
+        if (type === 'plot_and_plan') {
+            total = value('htPlotSellingPrice') + value('htConstructionAmount')
+                + value('htAgentCommissionFeesPP') + value('htOtherFeesPP');
+        } else if (type === 'existing_house') {
+            total = value('htPropertySellingPrice') + value('htAgentCommissionFeesEH') + value('htOtherFeesEH');
+        }
+
+        totalField.value = total > 0 ? this.formatMoneyValue(total.toFixed(2)) : '';
+        FormValidation.clearFieldValidation(totalField);
     },
 
     // Setup signature type interactions
@@ -765,6 +887,84 @@ const SellerForm = {
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-2">
+                        <label class="form-label required">House Type</label>
+                        <select class="form-select ht-sale-pricing-type" name="htSalePricingType" required>
+                            <option value="">Select House Type</option>
+                            <option value="plot_and_plan">Plot &amp; Plan</option>
+                            <option value="existing_house">Existing House</option>
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="ht-plot-and-plan-pricing d-none">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <label class="form-label required">Plot Selling Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">N$</span>
+                                <input type="text" class="form-control money-input ht-pricing-input" name="htPlotSellingPrice" inputmode="decimal">
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="form-label required">Construction Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text">N$</span>
+                                <input type="text" class="form-control money-input ht-pricing-input" name="htConstructionAmount" inputmode="decimal">
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="form-label required">Agent Commission Fees</label>
+                            <div class="input-group">
+                                <span class="input-group-text">N$</span>
+                                <input type="text" class="form-control money-input ht-pricing-input" name="htAgentCommissionFeesPP" inputmode="decimal">
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="form-label required">Other Fees</label>
+                            <div class="input-group">
+                                <span class="input-group-text">N$</span>
+                                <input type="text" class="form-control money-input ht-pricing-input" name="htOtherFeesPP" inputmode="decimal">
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ht-existing-house-pricing d-none">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label required">Property Selling Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">N$</span>
+                                <input type="text" class="form-control money-input ht-pricing-input" name="htPropertySellingPrice" inputmode="decimal">
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label required">Agent Commission Fees</label>
+                            <div class="input-group">
+                                <span class="input-group-text">N$</span>
+                                <input type="text" class="form-control money-input ht-pricing-input" name="htAgentCommissionFeesEH" inputmode="decimal">
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label required">Other Fees</label>
+                            <div class="input-group">
+                                <span class="input-group-text">N$</span>
+                                <input type="text" class="form-control money-input ht-pricing-input" name="htOtherFeesEH" inputmode="decimal">
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
                         <label class="form-label required">Property Type</label>
                         <select class="form-select" name="htLandType" required>
                             <option value="">Select Property Type</option>
@@ -793,12 +993,13 @@ const SellerForm = {
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <label class="form-label required">Selling Price</label>
+                        <label class="form-label required">Total Selling Price</label>
                         <div class="input-group">
                             <span class="input-group-text">N$</span>
-                            <input type="text" class="form-control money-input" name="htSellingPrice" inputmode="decimal" required>
+                            <input type="text" class="form-control money-input" name="htSellingPrice" inputmode="decimal" required readonly>
                         </div>
                         <div class="invalid-feedback"></div>
+                        <div class="form-text">Calculated automatically from the House Type fields above.</div>
                     </div>
                 </div>
                 <div class="row">
@@ -823,7 +1024,7 @@ const SellerForm = {
 
         list.appendChild(htBlock);
         this.assignDynamicFieldLabels(htBlock, `development-${devBlock.dataset.devIndex}-house-${htIndex}`);
-        this.attachMoneyFormatting(htBlock.querySelector('.money-input'));
+        this.wireHouseTypePricing(htBlock);
         this.updateDevelopmentsUnlockState();
     },
 
@@ -978,6 +1179,7 @@ const SellerForm = {
                 house_types: []
             };
             devBlock.querySelectorAll('.house-type-block').forEach((htBlock) => {
+                const saleType = htBlock.querySelector('[name="htSalePricingType"]')?.value || '';
                 dev.house_types.push({
                     property_type: htBlock.querySelector('[name="htPropertyType"]')?.value || '',
                     number_of_units: htBlock.querySelector('[name="htUnits"]')?.value || '',
@@ -987,7 +1189,17 @@ const SellerForm = {
                     selling_price: htBlock.querySelector('[name="htSellingPrice"]')?.value || '',
                     rooms: htBlock.querySelector('[name="htRooms"]')?.value || '',
                     bathrooms: htBlock.querySelector('[name="htBathrooms"]')?.value || '',
-                    additional_features: htBlock.querySelector('[name="htAdditionalFeatures"]')?.value || ''
+                    additional_features: htBlock.querySelector('[name="htAdditionalFeatures"]')?.value || '',
+                    sale_pricing_type: saleType,
+                    plot_selling_price: saleType === 'plot_and_plan' ? (htBlock.querySelector('[name="htPlotSellingPrice"]')?.value || '') : '',
+                    construction_amount: saleType === 'plot_and_plan' ? (htBlock.querySelector('[name="htConstructionAmount"]')?.value || '') : '',
+                    property_selling_price: saleType === 'existing_house' ? (htBlock.querySelector('[name="htPropertySellingPrice"]')?.value || '') : '',
+                    agent_commission_fees: saleType === 'plot_and_plan'
+                        ? (htBlock.querySelector('[name="htAgentCommissionFeesPP"]')?.value || '')
+                        : (htBlock.querySelector('[name="htAgentCommissionFeesEH"]')?.value || ''),
+                    other_fees: saleType === 'plot_and_plan'
+                        ? (htBlock.querySelector('[name="htOtherFeesPP"]')?.value || '')
+                        : (htBlock.querySelector('[name="htOtherFeesEH"]')?.value || '')
                 });
             });
             developments.push(dev);
@@ -1166,6 +1378,13 @@ const SellerForm = {
             data.landType = document.getElementById('landType')?.value || '';
             data.landSize = document.getElementById('landSize')?.value || '';
             data.sellingPrice = document.getElementById('sellingPrice')?.value || '';
+            data.salePricingType = document.getElementById('salePricingType')?.value || '';
+            data.plotSellingPrice = document.getElementById('plotSellingPrice')?.value || '';
+            data.constructionAmount = document.getElementById('constructionAmount')?.value || '';
+            data.propertySellingPrice = document.getElementById('propertySellingPrice')?.value || '';
+            data.agentCommissionFees = data.salePricingType === 'plot_and_plan'
+                ? (document.getElementById('agentCommissionFeesPP')?.value || '')
+                : (document.getElementById('agentCommissionFeesEH')?.value || '');
             data.houseSize = document.getElementById('houseSize')?.value || '';
             data.rooms = document.getElementById('rooms')?.value || '';
             data.bathrooms = document.getElementById('bathrooms')?.value || '';
