@@ -933,7 +933,7 @@ const SellerForm = {
 
                 <div class="ht-plot-and-plan-pricing d-none">
                     <div class="row">
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="form-label required">Plot Selling Price</label>
                             <div class="input-group">
                                 <span class="input-group-text">N$</span>
@@ -941,7 +941,7 @@ const SellerForm = {
                             </div>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="form-label required">Construction Amount</label>
                             <div class="input-group">
                                 <span class="input-group-text">N$</span>
@@ -949,7 +949,9 @@ const SellerForm = {
                             </div>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
                             <label class="form-label required">Agent Commission Fees</label>
                             <div class="input-group">
                                 <span class="input-group-text">N$</span>
@@ -957,7 +959,7 @@ const SellerForm = {
                             </div>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="form-label required">Other Fees</label>
                             <div class="input-group">
                                 <span class="input-group-text">N$</span>
@@ -970,7 +972,7 @@ const SellerForm = {
 
                 <div class="ht-existing-house-pricing d-none">
                     <div class="row">
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="form-label required">Property Selling Price</label>
                             <div class="input-group">
                                 <span class="input-group-text">N$</span>
@@ -978,7 +980,7 @@ const SellerForm = {
                             </div>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="form-label required">Agent Commission Fees</label>
                             <div class="input-group">
                                 <span class="input-group-text">N$</span>
@@ -986,7 +988,9 @@ const SellerForm = {
                             </div>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="col-md-4 mb-2">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
                             <label class="form-label required">Other Fees</label>
                             <div class="input-group">
                                 <span class="input-group-text">N$</span>
@@ -1027,12 +1031,12 @@ const SellerForm = {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-6 mb-2">
                         <label class="form-label required">No. of Rooms</label>
                         <input type="number" class="form-control" name="htRooms" min="1" required>
                         <div class="invalid-feedback"></div>
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-6 mb-2">
                         <label class="form-label required">No. of Bathrooms</label>
                         <input type="number" class="form-control" name="htBathrooms" min="1" required>
                         <div class="invalid-feedback"></div>

@@ -141,13 +141,13 @@ $baseUrl = \App\Core\Router::basePath();
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="dateOfBirth" class="form-label required">Date of Birth</label>
                                         <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
                                         <div class="invalid-feedback"></div>
                                         <div id="ageDisplay" class="small text-muted mt-1"></div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="idType" class="form-label required">Type of ID</label>
                                         <select class="form-select" id="idType" name="idType" required>
                                             <option value="">Select ID Type</option>
@@ -156,7 +156,9 @@ $baseUrl = \App\Core\Router::basePath();
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label for="idNumber" class="form-label required">ID Number</label>
                                         <input type="text" class="form-control" id="idNumber" name="idNumber" maxlength="13" required>
                                         <div class="invalid-feedback"></div>
@@ -233,12 +235,12 @@ $baseUrl = \App\Core\Router::basePath();
                                     </div>
                                     
                                     <div class="row">
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label for="spouseDateOfBirth" class="form-label required">Date of Birth</label>
                                             <input type="date" class="form-control" id="spouseDateOfBirth" name="spouseDateOfBirth">
                                             <div class="invalid-feedback"></div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label for="spouseIdType" class="form-label required">Type of ID</label>
                                             <select class="form-select" id="spouseIdType" name="spouseIdType">
                                                 <option value="">Select ID Type</option>
@@ -247,7 +249,9 @@ $baseUrl = \App\Core\Router::basePath();
                                             </select>
                                             <div class="invalid-feedback"></div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
                                             <label for="spouseIdNumber" class="form-label required">ID Number</label>
                                             <input type="text" class="form-control" id="spouseIdNumber" name="spouseIdNumber">
                                             <div class="invalid-feedback"></div>
@@ -534,7 +538,7 @@ $baseUrl = \App\Core\Router::basePath();
                                 <!-- Plot & Plan pricing (shown when Sale Type = Plot & Plan) -->
                                 <div id="plotAndPlanPricing" class="d-none">
                                     <div class="row">
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label for="plotSellingPrice" class="form-label required">Plot Selling Price</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">N$</span>
@@ -542,7 +546,7 @@ $baseUrl = \App\Core\Router::basePath();
                                             </div>
                                             <div class="invalid-feedback"></div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label for="constructionAmount" class="form-label required">Construction Amount</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">N$</span>
@@ -550,7 +554,9 @@ $baseUrl = \App\Core\Router::basePath();
                                             </div>
                                             <div class="invalid-feedback"></div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
                                             <label for="agentCommissionFeesPP" class="form-label required">Agent Commission Fees</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">N$</span>
@@ -612,7 +618,7 @@ $baseUrl = \App\Core\Router::basePath();
                                     </h5>
                                     
                                     <div class="row">
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label for="houseSize" class="form-label">House Size</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="houseSize" name="houseSize">
@@ -620,12 +626,14 @@ $baseUrl = \App\Core\Router::basePath();
                                             </div>
                                             <div class="invalid-feedback"></div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label for="rooms" class="form-label">Number of Rooms</label>
                                             <input type="number" class="form-control" id="rooms" name="rooms" min="1">
                                             <div class="invalid-feedback"></div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
                                             <label for="bathrooms" class="form-label">Number of Bathrooms</label>
                                             <input type="number" class="form-control" id="bathrooms" name="bathrooms" min="1">
                                             <div class="invalid-feedback"></div>

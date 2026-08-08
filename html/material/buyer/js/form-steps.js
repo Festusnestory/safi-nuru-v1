@@ -197,19 +197,21 @@ const FormSteps = {
                 </div>
                 
                 <div class="row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="nokLocation" class="form-label">Location</label>
                         <input type="text" class="form-control" id="nokLocation" name="nokLocation">
                         <div class="invalid-feedback"></div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="nokRegion" class="form-label">Region</label>
                         <select class="form-select" id="nokRegion" name="nokRegion">
                             <option value="">Select Region</option>
                         </select>
                         <div class="invalid-feedback"></div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
                         <label for="nokTown" class="form-label">Town</label>
                         <select class="form-select" id="nokTown" name="nokTown">
                             <option value="">Select Town</option>
@@ -327,17 +329,19 @@ const FormSteps = {
                 </div>
                 
                 <div class="row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="propertyValue" class="form-label required">Property Value (NAD)</label>
                         <input type="number" class="form-control" id="propertyValue" name="propertyValue" min="0" step="0.01" required>
                         <div class="invalid-feedback"></div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="downPayment" class="form-label required">Down Payment (NAD)</label>
                         <input type="number" class="form-control" id="downPayment" name="downPayment" min="0" step="0.01" required>
                         <div class="invalid-feedback"></div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
                         <label for="loanAmount" class="form-label">Loan Amount (NAD)</label>
                         <input type="number" class="form-control" id="loanAmount" name="loanAmount" min="0" step="0.01" readonly>
                         <div class="invalid-feedback"></div>
@@ -349,23 +353,25 @@ const FormSteps = {
                     <div id="preferredAreas">
                         <div class="preferred-area-item" data-area-id="1">
                             <div class="row">
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <label class="form-label" for="preferred-region-1">Region</label>
                                     <select class="form-select preferred-region" id="preferred-region-1" name="preferredRegion[]">
                                         <option value="">Select Region</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <label class="form-label" for="preferred-town-1">Town</label>
                                     <select class="form-select preferred-town" id="preferred-town-1" name="preferredTown[]">
                                         <option value="">Select Town</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3 mb-3">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
                                     <label class="form-label" for="preferred-location-1">Location</label>
                                     <input type="text" class="form-control" id="preferred-location-1" name="preferredLocation[]">
                                 </div>
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <label class="form-label" for="preferred-suburb-1">Suburb</label>
                                     <input type="text" class="form-control" id="preferred-suburb-1" name="preferredSuburb[]">
                                 </div>
@@ -473,17 +479,19 @@ const FormSteps = {
                     <h5 class="mb-3 text-secondary">Signature</h5>
                     
                     <div class="row mb-3">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="signatureLocation" class="form-label required">Location</label>
                             <input type="text" class="form-control" id="signatureLocation" name="signatureLocation" required>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="signatureDate" class="form-label required">Date</label>
                             <input type="date" class="form-control" id="signatureDate" name="signatureDate" required>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="col-md-4 mb-3">
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="signatureType" class="form-label required">Signature Method</label>
                             <select class="form-select" id="signatureType" name="signatureType" required>
                                 <option value="">Select Method</option>
@@ -788,24 +796,26 @@ const FormSteps = {
                         <i class="fas fa-times" aria-hidden="true"></i>
                     </button>
                     <div class="row">
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="form-label">Region</label>
                             <select class="form-select preferred-region" name="preferredRegion[]">
                                 <option value="">Select Region</option>
                                 ${FormData.regions.map(region => `<option value="${region}">${region}</option>`).join('')}
                             </select>
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="form-label">Town</label>
                             <select class="form-select preferred-town" name="preferredTown[]">
                                 <option value="">Select Town</option>
                             </select>
                         </div>
-                        <div class="col-md-3 mb-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                             <label class="form-label">Location</label>
                             <input type="text" class="form-control" name="preferredLocation[]">
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="form-label">Suburb</label>
                             <input type="text" class="form-control" name="preferredSuburb[]">
                         </div>

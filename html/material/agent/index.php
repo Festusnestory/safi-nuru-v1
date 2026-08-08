@@ -138,12 +138,12 @@ $baseUrl = \App\Core\Router::basePath();
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="date_of_birth" class="form-label required">Date of Birth</label>
                                         <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="id_type" class="form-label required">Type of ID</label>
                                         <select class="form-select" id="id_type" name="id_type" required>
                                             <option value="">Select ID Type</option>
@@ -152,7 +152,9 @@ $baseUrl = \App\Core\Router::basePath();
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label for="id_number" class="form-label required">ID Number</label>
                                         <input type="text" class="form-control" id="id_number" name="id_number" required>
                                         <div class="invalid-feedback"></div>
@@ -348,7 +350,7 @@ $baseUrl = \App\Core\Router::basePath();
                                 
                                 <h5 class="mt-4 mb-3">Monthly Income</h5>
                                 <div class="row">
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="gross_income" class="form-label required">Gross Income</label>
                                         <div class="input-group">
                                             <span class="input-group-text">N$</span>
@@ -356,7 +358,7 @@ $baseUrl = \App\Core\Router::basePath();
                                         </div>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="total_deductions" class="form-label required">Total Deductions</label>
                                         <div class="input-group">
                                             <span class="input-group-text">N$</span>
@@ -364,7 +366,9 @@ $baseUrl = \App\Core\Router::basePath();
                                         </div>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label for="net_pay" class="form-label required">Net Pay</label>
                                         <div class="input-group">
                                             <span class="input-group-text">N$</span>

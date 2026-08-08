@@ -132,12 +132,12 @@ $baseUrl = \App\Core\Router::basePath();
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="dateOfBirth" class="form-label required">Date of Birth</label>
                                         <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="nationality" class="form-label required">Nationality</label>
                                         <select class="form-select" id="nationality" name="nationality" required>
                                             <option value="">Select Nationality</option>
@@ -145,7 +145,9 @@ $baseUrl = \App\Core\Router::basePath();
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label for="gender" class="form-label required">Gender</label>
                                         <select class="form-select" id="gender" name="gender" required>
                                             <option value="">Select Gender</option>
@@ -193,17 +195,19 @@ $baseUrl = \App\Core\Router::basePath();
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label for="spouseDateOfBirth" class="form-label">Date of Birth</label>
                                             <input type="date" class="form-control" id="spouseDateOfBirth" name="spouseDateOfBirth">
                                             <div class="invalid-feedback"></div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label for="spouseContactNumber" class="form-label">Contact Number</label>
                                             <input type="tel" class="form-control" id="spouseContactNumber" name="spouseContactNumber">
                                             <div class="invalid-feedback"></div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
                                             <label for="spouseEmail" class="form-label">Email Address</label>
                                             <input type="email" class="form-control" id="spouseEmail" name="spouseEmail">
                                             <div class="invalid-feedback"></div>
