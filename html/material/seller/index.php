@@ -9,9 +9,11 @@ if (
     header('Location: ../property_admin_form.php', true, 303);
     exit;
 }
+require_once __DIR__ . '/../../../app/autoload.php';
 require_once __DIR__ . '/../api/security_integration.php';
 require_once __DIR__ . '/../config/turnstile.php';
 $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit');
+$baseUrl = \App\Core\Router::basePath();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,11 +23,11 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
     <title>Seller Application Form - Nuru Real Estate</title>
 
     <!-- Bootstrap CSS -->
-    <link href="../../../assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= $baseUrl ?>/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Custom CSS -->
-    <link href="css/seller-form.css?v=<?= filemtime(__DIR__ . '/css/seller-form.css') ?>" rel="stylesheet">
+    <link href="<?= $baseUrl ?>/html/material/seller/css/seller-form.css?v=<?= filemtime(__DIR__ . '/css/seller-form.css') ?>" rel="stylesheet">
 
     <!-- CSRF Token Meta -->
     <meta name="csrf-token" content="<?php echo htmlspecialchars($csrfToken); ?>">
@@ -34,12 +36,13 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
     <?php if (TURNSTILE_READY): ?>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <?php endif; ?>
+    <script>window.NURU_API_BASE = <?= json_encode($baseUrl . '/html/material/api') ?>;</script>
 </head>
 <body class="bg-white seller-form-body">
     <!-- Header -->
     <header class="bg-white py-3 mb-3 seller-form-header">
         <div class="container">
-            <a class="seller-back-link" href="../authentication-login.php">
+            <a class="seller-back-link" href="<?= $baseUrl ?>/login">
                 <i class="fas fa-arrow-left me-1"></i>
                 Back to login
             </a>
@@ -1060,7 +1063,7 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
                     </div>
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
-                    <a class="btn btn-primary" href="../authentication-login.php" id="sellerReturnToLogin">
+                    <a class="btn btn-primary" href="<?= $baseUrl ?>/login" id="sellerReturnToLogin">
                         <i class="fas fa-home me-2"></i>
                         Return to login
                     </a>
@@ -1070,11 +1073,11 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
     </div>
 
     <!-- Scripts -->
-    <script src="../../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/form-data.js?v=<?= filemtime(__DIR__ . '/js/form-data.js') ?>"></script>
-    <script src="js/form-validation.js?v=<?= filemtime(__DIR__ . '/js/form-validation.js') ?>"></script>
-    <script src="js/form-steps.js?v=<?= filemtime(__DIR__ . '/js/form-steps.js') ?>"></script>
-    <script src="js/seller-form.js?v=<?= filemtime(__DIR__ . '/js/seller-form.js') ?>"></script>
+    <script src="<?= $baseUrl ?>/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= $baseUrl ?>/html/material/seller/js/form-data.js?v=<?= filemtime(__DIR__ . '/js/form-data.js') ?>"></script>
+    <script src="<?= $baseUrl ?>/html/material/seller/js/form-validation.js?v=<?= filemtime(__DIR__ . '/js/form-validation.js') ?>"></script>
+    <script src="<?= $baseUrl ?>/html/material/seller/js/form-steps.js?v=<?= filemtime(__DIR__ . '/js/form-steps.js') ?>"></script>
+    <script src="<?= $baseUrl ?>/html/material/seller/js/seller-form.js?v=<?= filemtime(__DIR__ . '/js/seller-form.js') ?>"></script>
 
     <!-- Background -->
     <div class="fixed-bg"></div>

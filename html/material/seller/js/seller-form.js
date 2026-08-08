@@ -1,7 +1,11 @@
 // Seller Form - Main form handling and API interactions
 
 const SellerForm = {
-    apiBaseUrl: '../api',
+    // window.NURU_API_BASE (set inline in seller/index.php) is an absolute
+    // path so this still resolves correctly when the page is reached via
+    // the clean /seller route, not just the legacy html/material/seller/
+    // URL where the relative '../api' default was resolved from.
+    apiBaseUrl: window.NURU_API_BASE || '../api',
     csrfToken: null,
     additionalDocumentCount: 0,
     isSubmitting: false,

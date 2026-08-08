@@ -15,4 +15,16 @@ $router->any('/logout', function (): void {
     (new AuthController())->logout();
 });
 
+$router->any('/buyer', function (): void {
+    require \NURU_MATERIAL . '/buyer/index.php';
+});
+
+$router->any('/seller', function (): void {
+    require \NURU_MATERIAL . '/seller/index.php';
+});
+
+$router->any('/agent', function (): void {
+    require \NURU_MATERIAL . '/agent/index.php';
+});
+
 $router->dispatch();

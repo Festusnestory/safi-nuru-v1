@@ -41,7 +41,7 @@ use App\Models\PublicProperty;
 
   <section class="journey section-dark">
     <div><p class="eyebrow light">ONE TEAM, EVERY STEP</p><h2>Wherever you are<br>on the journey.</h2></div>
-    <div class="journey-grid"><a href="properties.php"><span>01</span><h3>Buy</h3><p>Explore opportunities selected around the way you want to live and invest.</p><b>Explore homes →</b></a><a href="html/material/seller/index.php"><span>02</span><h3>Sell</h3><p>Present your property with care and reach serious, qualified buyers.</p><b>List with Nuru →</b></a><a href="contact.php"><span>03</span><h3>Get guidance</h3><p>Start with a conversation, whether your plans are clear or still taking shape.</p><b>Speak to us →</b></a></div>
+    <div class="journey-grid"><a href="properties.php"><span>01</span><h3>Buy</h3><p>Explore opportunities selected around the way you want to live and invest.</p><b>Explore homes →</b></a><a href="seller"><span>02</span><h3>Sell</h3><p>Present your property with care and reach serious, qualified buyers.</p><b>List with Nuru →</b></a><a href="contact.php"><span>03</span><h3>Get guidance</h3><p>Start with a conversation, whether your plans are clear or still taking shape.</p><b>Speak to us →</b></a></div>
   </section>
 
   <section class="cta-panel"><p class="eyebrow light">YOUR NEXT MOVE</p><h2>Let’s find what<br>feels right.</h2><p>Share your property goals with us. We will come back with a clear, considered next step.</p><a class="button button-gold" href="contact.php">Start a conversation <span>→</span></a></section>

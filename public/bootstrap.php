@@ -97,7 +97,7 @@ function renderHeader(string $title, string $description, string $active = ''): 
     <a class="<?= $active === 'properties' ? 'active' : '' ?>" href="properties.php">Properties</a>
     <a class="<?= $active === 'about' ? 'active' : '' ?>" href="about.php">About</a>
     <a class="<?= $active === 'contact' ? 'active' : '' ?>" href="contact.php">Contact</a>
-    <a class="portal-link" href="html/material/authentication-login.php">Client portal <span aria-hidden="true">↗</span></a>
+    <a class="portal-link" href="login">Client portal <span aria-hidden="true">↗</span></a>
   </nav>
 </header>
 <?php
@@ -109,8 +109,8 @@ function renderFooter(): void
 <footer class="site-footer">
   <div><a class="brand brand-light" href="index.php"><span class="brand-mark">N</span><span>NURU<small>REAL ESTATE</small></span></a><p>Property guidance built around clarity, local knowledge, and outcomes that last.</p></div>
   <div><h2>Explore</h2><a href="properties.php">Properties</a><a href="about.php">Our approach</a><a href="contact.php">Contact us</a></div>
-  <div><h2>Start here</h2><a href="html/material/buyer/index.php">Buyer application</a><a href="html/material/seller/index.php">List a property</a><a href="html/material/agent/index.php">Join as an agent</a></div>
-  <div><h2>Portal</h2><a href="html/material/authentication-login.php">Sign in</a><p>Windhoek, Namibia<br>Mon–Fri · 08:00–17:00</p></div>
+  <div><h2>Start here</h2><a href="buyer">Buyer application</a><a href="seller">List a property</a><a href="agent">Join as an agent</a></div>
+  <div><h2>Portal</h2><a href="login">Sign in</a><p>Windhoek, Namibia<br>Mon–Fri · 08:00–17:00</p></div>
   <div class="footer-bottom"><span>© <?= date('Y') ?> Nuru Real Estate. All rights reserved.</span><span>Built for Namibia.</span></div>
 </footer>
 <script src="public/assets/js/site.js?v=<?= (int)filemtime(__DIR__ . '/assets/js/site.js') ?>" defer></script>

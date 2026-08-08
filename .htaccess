@@ -35,6 +35,9 @@ RewriteRule ^sitemap\.xml$ sitemap.php [L]
 # working unchanged - these are additive, not replacements.
 RewriteRule ^login/?$ public/index.php?__route=login [L,QSA]
 RewriteRule ^logout/?$ public/index.php?__route=logout [L,QSA]
+RewriteRule ^buyer/?$ public/index.php?__route=buyer [L,QSA]
+RewriteRule ^seller/?$ public/index.php?__route=seller [L,QSA]
+RewriteRule ^agent/?$ public/index.php?__route=agent [L,QSA]
 
 # Uploaded content is stored under web-visible folders for image/video
 # previews. Never let any script-like extension in those folders reach the

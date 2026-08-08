@@ -17,7 +17,7 @@
       <h2>We’re ready<br>when you are.</h2>
       <div><span>VISIT</span><p>Windhoek, Namibia</p></div>
       <div><span>HOURS</span><p>Monday–Friday<br>08:00–17:00</p></div>
-      <div><span>PORTAL</span><p><a href="html/material/authentication-login.php">Existing client sign in ↗</a></p></div>
+      <div><span>PORTAL</span><p><a href="login">Existing client sign in ↗</a></p></div>
     </div>
     <div class="contact-form-wrap">
       <?php if ($sent): ?>

@@ -452,7 +452,8 @@ class AgentForm {
             Object.keys(this.formData).forEach(key => formData.append(key, this.formData[key]));
             Object.keys(this.uploadedFiles).forEach(key => formData.append(key, this.uploadedFiles[key]));
 
-            const response = await fetch('./../api/applications/agent/index.php', {
+            const apiBase = window.NURU_API_BASE || '../api';
+            const response = await fetch(`${apiBase}/applications/agent/index.php`, {
                 method: 'POST',
                 body: formData
             });

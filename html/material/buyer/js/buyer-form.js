@@ -1,7 +1,10 @@
 // Buyer Form - Main form handling and API interactions
 
 const BuyerForm = {
-    apiBaseUrl: '../api',
+    // window.NURU_API_BASE (set inline in buyer/index.php) is absolute so
+    // this still resolves correctly via the clean /buyer route, not just
+    // the legacy html/material/buyer/ URL the relative default assumed.
+    apiBaseUrl: window.NURU_API_BASE || '../api',
     csrfToken: null,
     isSubmitting: false,
     submissionKey: null,

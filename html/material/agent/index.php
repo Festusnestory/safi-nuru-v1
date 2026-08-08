@@ -3,6 +3,7 @@
  * Public Nuru agent application form.
  */
 
+require_once __DIR__ . '/../../../app/autoload.php';
 require_once __DIR__ . '/../api/security_integration.php';
 require_once __DIR__ . '/../config/turnstile.php';
 SecurityIntegration::init();
@@ -12,6 +13,7 @@ header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('Referrer-Policy: same-origin');
 $csrfToken = SecurityIntegration::generateCSRFToken('agent_application_submit');
+$baseUrl = \App\Core\Router::basePath();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,50 +24,33 @@ $csrfToken = SecurityIntegration::generateCSRFToken('agent_application_submit');
     <?php if (TURNSTILE_READY): ?>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <?php endif; ?>
-    
+
     <!-- Bootstrap CSS -->
-    <link href="../../../assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= $baseUrl ?>/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" integrity="sha384-QuGBSgV5Im3DzL2z+8Ko9/hqNy/N0O7zwvXAtfd1MvPKWa/UbeLV65cfm4BV5Wgq" crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Agent Form CSS -->
-    <link rel="stylesheet" href="css/agent-form.css?v=<?= filemtime(__DIR__ . '/css/agent-form.css') ?>">
+    <link rel="stylesheet" href="<?= $baseUrl ?>/html/material/agent/css/agent-form.css?v=<?= filemtime(__DIR__ . '/css/agent-form.css') ?>">
+    <script>window.NURU_API_BASE = <?= json_encode($baseUrl . '/html/material/api') ?>;</script>
 </head>
-<body>
-    <nav class="navbar navbar-dark bg-primary">
+<body class="bg-white agent-form-body">
+    <header class="bg-white py-3 mb-3 agent-form-header">
         <div class="container">
-            <a class="navbar-brand" href="../authentication-login.php">Nuru Real Estate</a>
-            <a class="btn btn-outline-light" href="../authentication-login.php">Back to sign in</a>
+            <a class="agent-back-link" href="<?= $baseUrl ?>/login">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to login
+            </a>
+            <div class="text-center mt-2">
+                <h1 class="app-title">
+                    <i class="bi bi-person-badge"></i>
+                    Agent Application
+                </h1>
+                <p class="app-subtitle">Apply to join the Nuru agent network</p>
+            </div>
         </div>
-    </nav>
-    
+    </header>
+
     <div class="container-fluid">
-        <div class="row">
-            <!-- Portal Navigation Breadcrumb -->
-            <div class="col-12">
-                <nav aria-label="breadcrumb" class="bg-light py-2">
-                    <div class="container">
-                        <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a href="../authentication-login.php">Sign in</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Agent Application</li>
-                        </ol>
-                    </div>
-                </nav>
-            </div>
-            
-            <!-- Header -->
-            <div class="col-12">
-                <header class="app-header">
-                    <div class="container">
-                        <h1 class="app-title">
-                            <i class="bi bi-person-badge"></i>
-                            Agent Application
-                        </h1>
-                        <p class="app-subtitle">Apply to join the Nuru agent network</p>
-                    </div>
-                </header>
-            </div>
-        </div>
-        
         <div class="container mt-4">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-10">
@@ -624,13 +609,13 @@ $csrfToken = SecurityIntegration::generateCSRFToken('agent_application_submit');
                     <p class="mt-3"><strong>Application ID:</strong> <span id="applicationId"></span></p>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" onclick="window.location.href='../authentication-login.php'">Return to sign in</button>
+                    <button type="button" class="btn btn-success" onclick='window.location.href=<?= json_encode($baseUrl . "/login") ?>'>Return to sign in</button>
                 </div>
             </div>
         </div>
     </div>
     
     <!-- Agent Form JS -->
-    <script src="js/agent-form.js?v=<?= filemtime(__DIR__ . '/js/agent-form.js') ?>"></script>
+    <script src="<?= $baseUrl ?>/html/material/agent/js/agent-form.js?v=<?= filemtime(__DIR__ . '/js/agent-form.js') ?>"></script>
 </body>
 </html>

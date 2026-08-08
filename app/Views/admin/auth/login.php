@@ -197,7 +197,7 @@
                       </div>
                       <h4 class="card-title mb-3">Buyer</h4>
                       <p class="card-text text-muted flex-grow-1">Complete your buyer application to get started.</p>
-                      <a href="<?= $baseUrl ?>/html/material/buyer/index.php" class="btn btn-primary w-100 mt-3">
+                      <a href="<?= $baseUrl ?>/buyer" class="btn btn-primary w-100 mt-3">
 							<i class="fas fa-arrow-right me-2"></i> Start Application
 						</a>
                     </div>
@@ -211,7 +211,7 @@
                       </div>
                       <h4 class="card-title mb-3">Seller</h4>
                       <p class="card-text text-muted flex-grow-1">Register as a seller to list your property.</p>
-						<a href="<?= $baseUrl ?>/html/material/seller/index.php" class="btn btn-primary w-100 mt-3">
+						<a href="<?= $baseUrl ?>/seller" class="btn btn-primary w-100 mt-3">
 							<i class="fas fa-arrow-right me-2"></i>List Property
 						</a>
                     </div>
@@ -225,7 +225,7 @@
                       </div>
                       <h4 class="card-title mb-3">Agent</h4>
                       <p class="card-text text-muted flex-grow-1">Join our agent network to manage properties.</p>
-						<a href="<?= $baseUrl ?>/html/material/agent/index.php" class="btn btn-primary w-100 mt-3">
+						<a href="<?= $baseUrl ?>/agent" class="btn btn-primary w-100 mt-3">
 							<i class="fas fa-arrow-right me-2"></i> Start Application
 						</a>
                     </div>

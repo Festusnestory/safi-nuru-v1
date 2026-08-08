@@ -2,9 +2,11 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/../../../app/autoload.php';
 require_once __DIR__ . '/../api/security_integration.php';
 require_once __DIR__ . '/../config/turnstile.php';
 $csrfToken = SecurityIntegration::generateCSRFToken('buyer_application_submit');
+$baseUrl = \App\Core\Router::basePath();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,11 +16,11 @@ $csrfToken = SecurityIntegration::generateCSRFToken('buyer_application_submit');
     <title>Buyer Application Form - Nuru Real Estate</title>
 
     <!-- Bootstrap CSS -->
-    <link href="../../../assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= $baseUrl ?>/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Custom CSS -->
-    <link href="css/buyer-form.css?v=<?php echo (int)filemtime(__DIR__ . '/css/buyer-form.css'); ?>" rel="stylesheet">
+    <link href="<?= $baseUrl ?>/html/material/buyer/css/buyer-form.css?v=<?php echo (int)filemtime(__DIR__ . '/css/buyer-form.css'); ?>" rel="stylesheet">
 
     <!-- CSRF Token Meta -->
     <meta name="csrf-token" content="<?php echo htmlspecialchars($csrfToken); ?>">
@@ -39,38 +41,20 @@ $csrfToken = SecurityIntegration::generateCSRFToken('buyer_application_submit');
             required: <?php echo TURNSTILE_ENABLED ? 'true' : 'false'; ?>,
             configured: <?php echo TURNSTILE_CONFIGURED ? 'true' : 'false'; ?>
         };
+        window.NURU_API_BASE = <?= json_encode($baseUrl . '/html/material/api') ?>;
     </script>
 </head>
-<body class="bg-light">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="../authentication-login.php" data-buyer-exit>
-                <i class="fas fa-home me-2"></i>
-                Nuru Real Estate
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../authentication-login.php" data-buyer-exit>
-                            <i class="fas fa-arrow-left me-1"></i>
-                            Back to Login
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+<body class="bg-white buyer-form-body">
     <!-- Header -->
-    <header class="bg-white shadow-sm py-4 mb-4">
+    <header class="bg-white py-3 mb-3 buyer-form-header">
         <div class="container">
-            <div class="text-center">
-                <h1 class="h3 mb-2 text-primary">Buyer Application Form</h1>
-                <p class="text-muted mb-0">
+            <a class="buyer-back-link" href="<?= $baseUrl ?>/login" data-buyer-exit>
+                <i class="fas fa-arrow-left me-1"></i>
+                Back to login
+            </a>
+            <div class="text-center mt-2">
+                <h1 class="h4 mb-2 text-primary">Buyer Application Form</h1>
+                <p class="text-muted mb-0 small">
                     Complete this comprehensive form to begin your property journey with Nuru Real Estate.
                     All information is kept confidential and secure.
                 </p>
@@ -282,7 +266,7 @@ $csrfToken = SecurityIntegration::generateCSRFToken('buyer_application_submit');
                     </p>
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
-                    <a class="btn btn-primary" href="../authentication-login.php" id="buyerReturnToPortal">
+                    <a class="btn btn-primary" href="<?= $baseUrl ?>/login" id="buyerReturnToPortal">
                         Return to Portal
                     </a>
                 </div>
@@ -312,10 +296,10 @@ $csrfToken = SecurityIntegration::generateCSRFToken('buyer_application_submit');
     </div>
 
     <!-- Scripts -->
-    <script src="../../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/form-data.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-data.js'); ?>"></script>
-    <script src="js/form-steps.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-steps.js'); ?>"></script>
-    <script src="js/form-validation.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-validation.js'); ?>"></script>
-    <script src="js/buyer-form.js?v=<?php echo (int)filemtime(__DIR__ . '/js/buyer-form.js'); ?>"></script>
+    <script src="<?= $baseUrl ?>/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= $baseUrl ?>/html/material/buyer/js/form-data.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-data.js'); ?>"></script>
+    <script src="<?= $baseUrl ?>/html/material/buyer/js/form-steps.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-steps.js'); ?>"></script>
+    <script src="<?= $baseUrl ?>/html/material/buyer/js/form-validation.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-validation.js'); ?>"></script>
+    <script src="<?= $baseUrl ?>/html/material/buyer/js/buyer-form.js?v=<?php echo (int)filemtime(__DIR__ . '/js/buyer-form.js'); ?>"></script>
 </body>
 </html>
