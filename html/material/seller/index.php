@@ -35,36 +35,17 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <?php endif; ?>
 </head>
-<body class="bg-light">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="../../../index.php">
-                <i class="fas fa-home me-2"></i>
-                Nuru Real Estate
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../authentication-login.php">
-                            <i class="fas fa-arrow-left me-1"></i>
-                            Back to login
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+<body class="bg-white seller-form-body">
     <!-- Header -->
-    <header class="bg-white shadow-sm py-4 mb-4">
+    <header class="bg-white py-3 mb-3 seller-form-header">
         <div class="container">
-            <div class="row align-items-center">
+            <a class="seller-back-link" href="../authentication-login.php">
+                <i class="fas fa-arrow-left me-1"></i>
+                Back to login
+            </a>
+            <div class="row align-items-center mt-2">
                 <div class="col-md-8">
-                    <h1 class="h3 mb-2 text-primary">Seller Application</h1>
+                    <h1 class="h4 mb-2 text-primary">Seller Application</h1>
                     <div class="seller-mobile-progress d-md-none" aria-live="polite">
                         <span>Step <strong id="mobileStepNumber">1</strong> of 9</span>
                         <div class="progress mt-2" aria-label="Application progress">
@@ -75,7 +56,7 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
                 <div class="col-md-4 text-end d-none d-md-block">
                     <span class="badge bg-secondary fs-6">Step <span id="headerStepNumber">1</span> of 9</span>
                     <div class="progress mt-2" style="height: 6px;">
-                        <div class="progress-bar bg-primary" role="progressbar" 
+                        <div class="progress-bar bg-primary" role="progressbar"
                              style="width: 11.11%;" id="headerProgressBar"></div>
                     </div>
                 </div>
@@ -85,40 +66,28 @@ $csrfToken = SecurityIntegration::generateCSRFToken('seller_application_submit')
 
     <!-- Main Content -->
     <main class="container pb-5">
-        <div class="row">
-            <!-- Sidebar - Form Stepper -->
-            <div class="col-lg-3 mb-4 seller-stepper-column">
-                <div class="card shadow-sm sticky-top" style="top: 100px;">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-clipboard-list me-2"></i>
-                            Application Progress
-                        </h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div id="formStepper" class="list-group list-group-flush">
-                            <!-- Steps will be populated by JavaScript -->
-                        </div>
-                        
-                        <!-- Progress Summary -->
-                        <div class="p-3 border-top">
-                            <div class="text-center">
-                                <p class="small text-muted mb-2">
-                                    <span id="completedCount">0</span> of 9 steps completed
-                                </p>
-                                <div class="progress" style="height: 4px;">
-                                    <div class="progress-bar bg-success" role="progressbar" 
-                                         style="width: 0%;" id="sidebarProgress"></div>
-                                </div>
-                            </div>
-                        </div>
+        <!-- Horizontal Form Stepper -->
+        <div class="card seller-stepper-card mb-4">
+            <div class="card-body py-2">
+                <div id="formStepper" class="seller-stepper-row">
+                    <!-- Steps will be populated by JavaScript -->
+                </div>
+                <div class="text-center pt-2 border-top mt-2">
+                    <p class="small text-muted mb-1">
+                        <span id="completedCount">0</span> of 9 steps completed
+                    </p>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-success" role="progressbar"
+                             style="width: 0%;" id="sidebarProgress"></div>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="row">
             <!-- Main Form Area -->
-            <div class="col-lg-9">
-                <div class="card shadow">
+            <div class="col-12">
+                <div class="card shadow-sm">
                     <div class="card-body p-4">
                         <!-- Form -->
                         <form id="sellerApplicationForm" novalidate>

@@ -145,6 +145,81 @@
     margin: 0;
 }
 
+/* Page chrome: plain white background throughout, header framed with a
+   blue border instead of a solid fill, "Back to login" sits above the
+   title rather than in a separate top navbar. */
+.seller-form-body {
+    background-color: #fff;
+}
+
+.seller-form-header {
+    border: 1px solid var(--primary-color);
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.seller-back-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.seller-back-link:hover {
+    text-decoration: underline;
+}
+
+/* Horizontal stepper (replaces the old left sidebar) - wraps on narrow
+   screens, each step is icon + short title only (no subtitle, to stay
+   compact across nine steps in one row). */
+.seller-stepper-card {
+    border: 1px solid var(--border-color);
+}
+
+.seller-stepper-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.seller-stepper-row .stepper-item {
+    /* Bootstrap's .list-group-item sets width:100% - override it, or every
+       step stacks one-per-row regardless of the flex row it's sitting in. */
+    flex: 0 1 auto;
+    width: auto;
+    display: inline-flex;
+    border: none;
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem 0.35rem 0.35rem;
+}
+
+.seller-stepper-row .step-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-right: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.seller-stepper-row .step-subtitle {
+    display: none;
+}
+
+.seller-stepper-row .step-title {
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+/* Right-sized fields: form-control/select default height reads as
+   oversized once a step has several fields per row - tighten it. */
+.seller-form-body .form-control,
+.seller-form-body .form-select {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    font-size: 0.925rem;
+}
+
 /* Required Field Indicator */
 .required::after {
     content: " *";
