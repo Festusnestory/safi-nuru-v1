@@ -297,36 +297,58 @@ function validateSellerApplication(PDO $pdo, array &$data): void {
         throw new SellerValidationException('Please select a valid sale type.');
     }
     if ($data['saleType'] === 'Individual') {
-        foreach (['propertyDetailType', 'landType', 'landSize', 'propertyStreetName', 'propertyRegion', 'propertyTown'] as $field) {
+        foreach (['landSize', 'propertyStreetName', 'propertyRegion', 'propertyTown'] as $field) {
             if (trim((string)($data[$field] ?? '')) === '') {
                 throw new SellerValidationException('Please complete the property details.');
             }
         }
-        if (!in_array($data['propertyDetailType'], ['Single Residential', 'General Residential', 'Farm', 'Commercial/Business'], true)
-            || !in_array($data['landType'], ['Vacant Land', 'Existing Property'], true)
-            || !in_array($data['propertyRegion'], $regions, true)) {
+        if (!in_array($data['propertyRegion'], $regions, true)) {
             throw new SellerValidationException('Please select valid property details.');
         }
         $data['landSize'] = str_replace(',', '', (string)$data['landSize']);
         if (!is_numeric($data['landSize']) || (float)$data['landSize'] <= 0) {
             throw new SellerValidationException('Land size must be greater than zero.');
         }
-        if (!in_array($data['salePricingType'] ?? '', ['plot_and_plan', 'existing_house'], true)) {
-            throw new SellerValidationException('Please select a Sale Type (Plot & Plan or Existing House).');
+        if (!in_array($data['salePricingType'] ?? '', ['vacant_land', 'plot_and_plan', 'existing_house'], true)) {
+            throw new SellerValidationException('Please select a Property Type (Vacant Land, Plot & Plan, or Existing House).');
         }
 
-        // Total Selling Price is never trusted from the client - it is
-        // always recomputed here from the Sale Type breakdown fields so the
-        // stored total can't drift from (or be spoofed independently of) its
-        // components.
-        $data['sellingPrice'] = (string)sellerCalculateTotalSellingPrice($data['salePricingType'] ?? '', [
-            'plot_selling_price' => $data['plotSellingPrice'] ?? '',
-            'construction_amount' => $data['constructionAmount'] ?? '',
-            'property_selling_price' => $data['propertySellingPrice'] ?? '',
-            'agent_commission_fees' => $data['agentCommissionFees'] ?? '',
-        ]);
-        if ((float)$data['sellingPrice'] <= 0) {
-            throw new SellerValidationException('Selling price must be greater than zero.');
+        // The old standalone Property Type / Land Type selects were
+        // removed from the form - Property Type (salePricingType) now
+        // covers the same "what kind of land/property is this" concept, so
+        // derive the values the rest of this script (and the DB schema)
+        // still expect from it instead. property_detail_type has no
+        // equivalent input left in the simplified form; default it rather
+        // than leaving a NOT NULL column unset.
+        $data['propertyDetailType'] = 'Single Residential';
+        $data['landType'] = match ($data['salePricingType']) {
+            'vacant_land' => 'Vacant Land',
+            'plot_and_plan' => 'Plot and Plan',
+            'existing_house' => 'Existing Property',
+        };
+
+        if ($data['salePricingType'] === 'vacant_land') {
+            // No breakdown to compute from - Vacant Land is priced
+            // directly, same as every field on this form was before the
+            // Sale Type pricing breakdown existed.
+            $data['sellingPrice'] = str_replace(',', '', (string)($data['sellingPrice'] ?? ''));
+            if (!is_numeric($data['sellingPrice']) || (float)$data['sellingPrice'] <= 0) {
+                throw new SellerValidationException('Selling price must be greater than zero.');
+            }
+        } else {
+            // Total Selling Price is never trusted from the client for the
+            // priced Sale Types - it is always recomputed here from the
+            // breakdown fields so the stored total can't drift from (or be
+            // spoofed independently of) its components.
+            $data['sellingPrice'] = (string)sellerCalculateTotalSellingPrice($data['salePricingType'], [
+                'plot_selling_price' => $data['plotSellingPrice'] ?? '',
+                'construction_amount' => $data['constructionAmount'] ?? '',
+                'property_selling_price' => $data['propertySellingPrice'] ?? '',
+                'agent_commission_fees' => $data['agentCommissionFees'] ?? '',
+            ]);
+            if ((float)$data['sellingPrice'] <= 0) {
+                throw new SellerValidationException('Selling price must be greater than zero.');
+            }
         }
     } else {
         $developments = $data['developments'] ?? null;
@@ -351,7 +373,7 @@ function validateSellerApplication(PDO $pdo, array &$data): void {
                 throw new SellerValidationException('Each development needs between 1 and 25 house types.');
             }
             foreach ($development['house_types'] as &$houseType) {
-                foreach (['property_type', 'number_of_units', 'land_type', 'land_size'] as $field) {
+                foreach (['property_type', 'number_of_units', 'land_size'] as $field) {
                     if (trim((string)($houseType[$field] ?? '')) === '') {
                         throw new SellerValidationException('Complete every required house-type field.');
                     }
@@ -360,21 +382,40 @@ function validateSellerApplication(PDO $pdo, array &$data): void {
                     || !is_numeric(str_replace(',', '', (string)$houseType['land_size']))) {
                     throw new SellerValidationException('Provide valid development quantities and prices.');
                 }
-                if (!in_array($houseType['sale_pricing_type'] ?? '', ['plot_and_plan', 'existing_house'], true)) {
-                    throw new SellerValidationException('Select a House Type (Plot & Plan or Existing House) for every house type.');
+                if (!in_array($houseType['sale_pricing_type'] ?? '', ['vacant_land', 'plot_and_plan', 'existing_house'], true)) {
+                    throw new SellerValidationException('Select a House Type (Vacant Land, Plot & Plan, or Existing House) for every house type.');
                 }
-                // Total Selling Price is recomputed server-side from this
-                // house type's Sale Type breakdown, same as the individual
-                // seller path - never trusted from the client.
-                $houseType['selling_price'] = (string)sellerCalculateTotalSellingPrice($houseType['sale_pricing_type'] ?? '', [
-                    'plot_selling_price' => $houseType['plot_selling_price'] ?? '',
-                    'construction_amount' => $houseType['construction_amount'] ?? '',
-                    'property_selling_price' => $houseType['property_selling_price'] ?? '',
-                    'agent_commission_fees' => $houseType['agent_commission_fees'] ?? '',
-                    'other_fees' => $houseType['other_fees'] ?? '',
-                ]);
-                if ((float)$houseType['selling_price'] <= 0) {
-                    throw new SellerValidationException('Each house type\'s selling price must be greater than zero.');
+
+                // The old per-house-type Property Type (land_type) select was
+                // removed - House Type (sale_pricing_type) now covers the
+                // same concept, so derive the value the DB schema still
+                // expects from it instead.
+                $houseType['land_type'] = match ($houseType['sale_pricing_type']) {
+                    'vacant_land' => 'Vacant Land',
+                    'plot_and_plan' => 'Plot and Plan',
+                    'existing_house' => 'Existing Property',
+                };
+
+                if ($houseType['sale_pricing_type'] === 'vacant_land') {
+                    // No breakdown to compute from - priced directly.
+                    $houseType['selling_price'] = str_replace(',', '', (string)($houseType['selling_price'] ?? ''));
+                    if (!is_numeric($houseType['selling_price']) || (float)$houseType['selling_price'] <= 0) {
+                        throw new SellerValidationException('Each house type\'s selling price must be greater than zero.');
+                    }
+                } else {
+                    // Total Selling Price is recomputed server-side from this
+                    // house type's Sale Type breakdown, same as the individual
+                    // seller path - never trusted from the client.
+                    $houseType['selling_price'] = (string)sellerCalculateTotalSellingPrice($houseType['sale_pricing_type'], [
+                        'plot_selling_price' => $houseType['plot_selling_price'] ?? '',
+                        'construction_amount' => $houseType['construction_amount'] ?? '',
+                        'property_selling_price' => $houseType['property_selling_price'] ?? '',
+                        'agent_commission_fees' => $houseType['agent_commission_fees'] ?? '',
+                        'other_fees' => $houseType['other_fees'] ?? '',
+                    ]);
+                    if ((float)$houseType['selling_price'] <= 0) {
+                        throw new SellerValidationException('Each house type\'s selling price must be greater than zero.');
+                    }
                 }
             }
             unset($houseType);

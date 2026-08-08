@@ -89,12 +89,11 @@ const SellerForm = {
         // Sale type interactions
         this.setupSaleTypeInteractions();
 
-        // Individual seller Sale Type pricing breakdown (Plot & Plan / Existing House)
+        // Individual seller Property Type pricing breakdown (Vacant Land /
+        // Plot & Plan / Existing House) - also drives Existing Property
+        // Details visibility now that the old Land Type field is gone.
         this.setupSalePricingTypeInteractions();
 
-        // Land type interactions
-        this.setupLandTypeInteractions();
-        
         // Signature type interactions
         this.setupSignatureTypeInteractions();
     },
@@ -308,36 +307,22 @@ const SellerForm = {
         }
     },
 
-    // Setup land type interactions
-    setupLandTypeInteractions() {
-        const landTypeSelect = document.getElementById('landType');
-        if (landTypeSelect) {
-            landTypeSelect.addEventListener('change', (e) => {
-                const existingPropertySection = document.getElementById('existingPropertyDetails');
-                
-                if (e.target.value === 'Existing Property') {
-                    existingPropertySection?.classList.remove('d-none');
-                } else {
-                    existingPropertySection?.classList.add('d-none');
-                    // Clear existing property fields
-                    existingPropertySection?.querySelectorAll('input, select, textarea').forEach(field => {
-                        field.value = '';
-                        FormValidation.clearFieldValidation(field);
-                    });
-                }
-            });
-        }
-    },
-
-    // Setup individual-seller Sale Type pricing breakdown (Plot & Plan /
-    // Existing House) above Land Size / Total Selling Price. Total Selling
-    // Price is always computed from these fields, never typed directly.
+    // Setup individual-seller Property Type pricing breakdown (Vacant Land /
+    // Plot & Plan / Existing House) above Land Size / Total Selling Price.
+    // Vacant Land has no breakdown to compute from - the seller types the
+    // price directly, same as the rest of the app did before this feature
+    // existed. Plot & Plan / Existing House keep computing the total live.
+    // This field also now drives the "Existing Property Details" section
+    // (house size/rooms/bathrooms) that the old, now-removed Land Type
+    // field used to control.
     setupSalePricingTypeInteractions() {
         const typeSelect = document.getElementById('salePricingType');
         if (!typeSelect) return;
 
         const plotSection = document.getElementById('plotAndPlanPricing');
         const houseSection = document.getElementById('existingHousePricing');
+        const existingPropertySection = document.getElementById('existingPropertyDetails');
+        const totalField = document.getElementById('sellingPrice');
 
         [plotSection, houseSection].forEach(section => {
             section?.querySelectorAll('.sale-pricing-input').forEach(input => {
@@ -346,13 +331,40 @@ const SellerForm = {
             });
         });
 
+        if (totalField) {
+            this.attachMoneyFormatting(totalField);
+        }
+
         typeSelect.addEventListener('change', (e) => {
+            const isVacantLand = e.target.value === 'vacant_land';
             const isPlotAndPlan = e.target.value === 'plot_and_plan';
             const isExistingHouse = e.target.value === 'existing_house';
 
             this.toggleSalePricingSection(plotSection, isPlotAndPlan);
             this.toggleSalePricingSection(houseSection, isExistingHouse);
-            this.calculateIndividualTotalSellingPrice();
+
+            if (existingPropertySection) {
+                if (isExistingHouse) {
+                    existingPropertySection.classList.remove('d-none');
+                } else {
+                    existingPropertySection.classList.add('d-none');
+                    existingPropertySection.querySelectorAll('input, select, textarea').forEach(field => {
+                        field.value = '';
+                        FormValidation.clearFieldValidation(field);
+                    });
+                }
+            }
+
+            if (totalField) {
+                if (isVacantLand) {
+                    totalField.readOnly = false;
+                    totalField.value = '';
+                    FormValidation.clearFieldValidation(totalField);
+                } else {
+                    totalField.readOnly = true;
+                    this.calculateIndividualTotalSellingPrice();
+                }
+            }
         });
     },
 
@@ -385,7 +397,7 @@ const SellerForm = {
     calculateIndividualTotalSellingPrice() {
         const type = document.getElementById('salePricingType')?.value;
         const totalField = document.getElementById('sellingPrice');
-        if (!totalField) return;
+        if (!totalField || type === 'vacant_land') return; // manually typed - never overwritten
 
         let total = 0;
         if (type === 'plot_and_plan') {
@@ -410,6 +422,11 @@ const SellerForm = {
         const houseSection = htBlock.querySelector('.ht-existing-house-pricing');
         if (!typeSelect) return;
 
+        const totalField = htBlock.querySelector('[name="htSellingPrice"]');
+        if (totalField) {
+            this.attachMoneyFormatting(totalField);
+        }
+
         [plotSection, houseSection].forEach(section => {
             section?.querySelectorAll('.ht-pricing-input').forEach(input => {
                 this.attachMoneyFormatting(input);
@@ -418,21 +435,33 @@ const SellerForm = {
         });
 
         typeSelect.addEventListener('change', (e) => {
+            const isVacantLand = e.target.value === 'vacant_land';
             const isPlotAndPlan = e.target.value === 'plot_and_plan';
             const isExistingHouse = e.target.value === 'existing_house';
 
             this.toggleSalePricingSection(plotSection, isPlotAndPlan);
             this.toggleSalePricingSection(houseSection, isExistingHouse);
-            this.calculateHouseTypeTotalSellingPrice(htBlock);
+
+            if (totalField) {
+                if (isVacantLand) {
+                    totalField.readOnly = false;
+                    totalField.value = '';
+                    FormValidation.clearFieldValidation(totalField);
+                } else {
+                    totalField.readOnly = true;
+                    this.calculateHouseTypeTotalSellingPrice(htBlock);
+                }
+            }
         });
     },
 
     // Recompute one House Type block's Total Selling Price (includes Other
-    // Fees, unlike the individual seller calculation).
+    // Fees, unlike the individual seller calculation). Vacant Land is
+    // manually typed and never overwritten here.
     calculateHouseTypeTotalSellingPrice(htBlock) {
         const type = htBlock.querySelector('.ht-sale-pricing-type')?.value;
         const totalField = htBlock.querySelector('[name="htSellingPrice"]');
-        if (!totalField) return;
+        if (!totalField || type === 'vacant_land') return;
 
         const value = (name) => this.parseMoneyValue(htBlock.querySelector(`[name="${name}"]`)?.value);
 
@@ -894,6 +923,7 @@ const SellerForm = {
                         <label class="form-label required">House Type</label>
                         <select class="form-select ht-sale-pricing-type" name="htSalePricingType" required>
                             <option value="">Select House Type</option>
+                            <option value="vacant_land">Vacant Land</option>
                             <option value="plot_and_plan">Plot &amp; Plan</option>
                             <option value="existing_house">Existing House</option>
                         </select>
@@ -968,16 +998,6 @@ const SellerForm = {
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label required">Property Type</label>
-                        <select class="form-select" name="htLandType" required>
-                            <option value="">Select Property Type</option>
-                            <option value="Vacant Land">Vacant Land</option>
-                            <option value="Existing Property">Existing Property</option>
-                            <option value="Plot and Plan">Plot and Plan</option>
-                        </select>
-                        <div class="invalid-feedback"></div>
-                    </div>
                     <div class="col-md-6 mb-2">
                         <label class="form-label required">Land Size</label>
                         <div class="input-group">
@@ -1187,7 +1207,8 @@ const SellerForm = {
                 dev.house_types.push({
                     property_type: htBlock.querySelector('[name="htPropertyType"]')?.value || '',
                     number_of_units: htBlock.querySelector('[name="htUnits"]')?.value || '',
-                    land_type: htBlock.querySelector('[name="htLandType"]')?.value || '',
+                    // land_type no longer collected here - the backend derives
+                    // an equivalent value from sale_pricing_type instead.
                     land_size: htBlock.querySelector('[name="htLandSize"]')?.value || '',
                     house_size: htBlock.querySelector('[name="htHouseSize"]')?.value || '',
                     selling_price: htBlock.querySelector('[name="htSellingPrice"]')?.value || '',
@@ -1378,8 +1399,9 @@ const SellerForm = {
         if (data.saleType === 'Property Development') {
             data.developments = this.collectDevelopmentsData();
         } else {
-            data.propertyDetailType = document.getElementById('propertyDetailType')?.value || '';
-            data.landType = document.getElementById('landType')?.value || '';
+            // propertyDetailType/landType are no longer collected here - the
+            // backend derives an equivalent land_type from salePricingType
+            // (vacant_land/plot_and_plan/existing_house) instead.
             data.landSize = document.getElementById('landSize')?.value || '';
             data.sellingPrice = document.getElementById('sellingPrice')?.value || '';
             data.salePricingType = document.getElementById('salePricingType')?.value || '';

@@ -520,32 +520,10 @@ $baseUrl = \App\Core\Router::basePath();
                                 <div id="individualPropertyDetails">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="propertyDetailType" class="form-label required">Property Type</label>
-                                        <select class="form-select" id="propertyDetailType" name="propertyDetailType" required>
-                                            <option value="">Select Property Type</option>
-                                            <option value="Single Residential">Single Residential</option>
-                                            <option value="General Residential">General Residential</option>
-                                            <option value="Farm">Farm</option>
-                                            <option value="Commercial/Business">Commercial/Business</option>
-                                        </select>
-                                        <div class="invalid-feedback"></div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="landType" class="form-label required">Land Type</label>
-                                        <select class="form-select" id="landType" name="landType" required>
-                                            <option value="">Select Land Type</option>
-                                            <option value="Vacant Land">Vacant Land</option>
-                                            <option value="Existing Property">Existing Property</option>
-                                        </select>
-                                        <div class="invalid-feedback"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="salePricingType" class="form-label required">Sale Type</label>
+                                        <label for="salePricingType" class="form-label required">Property Type</label>
                                         <select class="form-select" id="salePricingType" name="salePricingType" required>
-                                            <option value="">Select Sale Type</option>
+                                            <option value="">Select Property Type</option>
+                                            <option value="vacant_land">Vacant Land</option>
                                             <option value="plot_and_plan">Plot &amp; Plan</option>
                                             <option value="existing_house">Existing House</option>
                                         </select>
@@ -622,10 +600,10 @@ $baseUrl = \App\Core\Router::basePath();
                                             <input type="text" class="form-control money-input" id="sellingPrice" name="sellingPrice" inputmode="decimal" aria-describedby="sellingPriceHelp" required readonly>
                                         </div>
                                         <div class="invalid-feedback"></div>
-                                        <div class="form-text" id="sellingPriceHelp">Calculated automatically from the Sale Type fields above.</div>
+                                        <div class="form-text" id="sellingPriceHelp">For Vacant Land, enter the price directly. Otherwise this is calculated automatically from the Property Type fields above.</div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Existing Property Details -->
                                 <div id="existingPropertyDetails" class="d-none">
                                     <h5 class="mb-3 text-secondary">
