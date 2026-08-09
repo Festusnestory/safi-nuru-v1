@@ -37,6 +37,10 @@ $router->any('/agent', function (): void {
     require \NURU_MATERIAL . '/agent/index.php';
 });
 
+$router->any('/admin/dashboard', function (): void {
+    (new \App\Controllers\Admin\DashboardController())->admin();
+});
+
 $router->any('/admin/buyers-list', function (): void {
     (new BuyerController())->list();
 });

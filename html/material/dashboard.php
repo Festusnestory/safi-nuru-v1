@@ -366,7 +366,7 @@ $sellers_by_region_json = json_encode($sellers_by_region);
           <!-- Row: needs attention -->
           <div class="row">
                     <div class="col-lg-3 col-md-6">
-                        <a href="user-management.php" class="text-decoration-none">
+                        <a href="<?= \App\Core\Router::legacyUrl('user-management.php') ?>" class="text-decoration-none">
                         <div class="metric-card" style="border-left-color:#dc3545;">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -562,9 +562,6 @@ $sellers_by_region_json = json_encode($sellers_by_region);
                             <td><?= renderCountdownBadge($d['property_status'], $d['status_deadline']) ?: '—' ?></td>
                           </tr>
                         <?php endforeach; ?>
-                        <?php if (empty($expiringSoon)): ?>
-                          <tr><td colspan="6" class="text-center text-muted">No deals currently under offer or awaiting transfer.</td></tr>
-                        <?php endif; ?>
                       </tbody>
                     </table>
                   </div>
@@ -608,7 +605,7 @@ $sellers_by_region_json = json_encode($sellers_by_region);
 							<td>
 								<?php if ($b['matched_count'] > 0):
 									  $ids = implode(',', $b['seller_ids']); ?>
-									<a href="loaded_sellers.php?buyer=<?= $b['buyer_id'] ?>&sellers=<?= urlencode($ids) ?>">
+									<a href="<?= \App\Core\Router::legacyUrl('loaded_sellers.php') ?>?buyer=<?= $b['buyer_id'] ?>&sellers=<?= urlencode($ids) ?>">
 										View (<?= $b['matched_count'] ?>)
 									</a>
 								<?php else: ?>

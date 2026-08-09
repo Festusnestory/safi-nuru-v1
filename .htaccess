@@ -42,6 +42,7 @@ RewriteRule ^agent/?$ public/index.php?__route=agent [L,QSA]
 # Buyer management (formerly html/material/buyers-list.php etc.) - MVC'd
 # behind App\Controllers\Admin\BuyerController, old URLs remain supported
 # via thin shims left in place at their original html/material/*.php paths.
+RewriteRule ^admin/dashboard/?$ public/index.php?__route=admin/dashboard [L,QSA]
 RewriteRule ^admin/buyers-list/?$ public/index.php?__route=admin/buyers-list [L,QSA]
 RewriteRule ^admin/buyer-admin-form/?$ public/index.php?__route=admin/buyer-admin-form [L,QSA]
 RewriteRule ^admin/admin-buyer-processor/?$ public/index.php?__route=admin/admin-buyer-processor [L,QSA]

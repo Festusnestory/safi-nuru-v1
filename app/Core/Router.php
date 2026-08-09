@@ -71,6 +71,7 @@ final class Router
      * public/index.php - keep the two in sync when either changes.
      */
     private const LEGACY_ROUTES = [
+        'admin.php' => '/admin/dashboard',
         'buyers-list.php' => '/admin/buyers-list',
         'buyer_admin_form.php' => '/admin/buyer-admin-form',
         'admin_buyer_processor.php' => '/admin/admin-buyer-processor',

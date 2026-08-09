@@ -17,7 +17,7 @@
       content="Secure Nuru Real Estate operations portal"
     />
     <meta name="robots" content="noindex,nofollow" />
-    <title>Seller Registration - Nuru Admin</title>
+    <title>Agent Registration - Nuru Admin</title>
     <link rel="icon" type="image/png" sizes="16x16" href="<?= $baseUrl ?>/assets/images/favicon.png" />
     
     <!-- Bootstrap 5 CSS -->

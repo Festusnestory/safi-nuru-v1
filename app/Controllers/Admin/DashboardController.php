@@ -15,6 +15,21 @@ use App\Core\View;
  */
 final class DashboardController extends Controller
 {
+    // The main admin/manager dashboard (formerly admin.php). Its stats and
+    // region-breakdown data are computed by top-bar.php itself (required by
+    // the View below), not here - matching-functions.php is included only
+    // for parity with the legacy page, which loaded it but never called any
+    // of its functions.
+    public function admin(): void
+    {
+        $this->requireRole(['admin', 'manager']);
+        require_once \NURU_MATERIAL . '/config/matching-functions.php';
+
+        $this->render('admin.dashboards.admin', [
+            'baseUrl' => \App\Core\Router::basePath(),
+        ]);
+    }
+
     public function buyer(): void
     {
         $this->requireRole(['buyer']);
