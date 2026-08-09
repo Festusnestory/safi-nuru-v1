@@ -93,7 +93,7 @@ class AgentForm {
     }
 
     setupTownRegionMapping() {
-        // Matches getDefaultNamibianTowns() in agent/includes/form_handler.php
+        // Namibian town-to-region mapping used for auto-filling the region field.
         this.townRegionMapping = {
             'Windhoek': 'Khomas',
             'Swakopmund': 'Erongo',
