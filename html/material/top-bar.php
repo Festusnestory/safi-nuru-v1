@@ -96,7 +96,7 @@ window.nuruConfirmClick = function (button, label) {
   <nav class="navbar top-navbar navbar-expand-md navbar-dark">
     <div class="navbar-header">
       <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)" aria-label="Toggle sidebar"><i class="ti-menu ti-close"></i></a>
-      <a class="navbar-brand" href="<?= $__nuruBase ?>/html/material/<?= htmlspecialchars($roleHome) ?>" aria-label="Nuru dashboard">
+      <a class="navbar-brand" href="<?= \App\Core\Router::legacyUrl($roleHome) ?>" aria-label="Nuru dashboard">
         <b class="logo-icon"><img src="<?= $__nuruBase ?>/assets/images/logo-light-icon.png" alt="Nuru" class="light-logo" style="width:140px"></b>
       </a>
       <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
@@ -118,8 +118,8 @@ window.nuruConfirmClick = function (button, label) {
           <a class="nav-link dropdown-toggle waves-effect waves-dark d-flex align-items-center" href="#" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu"><img src="<?= $__nuruBase ?>/assets/images/users/profile.png" alt="" width="30" class="profile-pic rounded-circle"><span class="d-none d-lg-inline ms-2"><?= htmlspecialchars($_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Account') ?></span></a>
           <div class="dropdown-menu dropdown-menu-end">
             <div class="px-3 py-2 border-bottom"><strong><?= htmlspecialchars($_SESSION['full_name'] ?? 'Nuru user') ?></strong><div class="small text-muted"><?= htmlspecialchars($_SESSION['email'] ?? '') ?></div></div>
-            <a class="dropdown-item" href="<?= $__nuruBase ?>/html/material/change-password.php"><i data-feather="key" class="feather-sm text-warning me-2"></i>Change password</a>
-            <a class="dropdown-item" href="<?= $__nuruBase ?>/html/material/config/logout.php"><i data-feather="log-out" class="feather-sm text-danger me-2"></i>Logout</a>
+            <a class="dropdown-item" href="<?= \App\Core\Router::legacyUrl('change-password.php') ?>"><i data-feather="key" class="feather-sm text-warning me-2"></i>Change password</a>
+            <a class="dropdown-item" href="<?= \App\Core\Router::legacyUrl('config/logout.php') ?>"><i data-feather="log-out" class="feather-sm text-danger me-2"></i>Logout</a>
           </div>
         </li>
       </ul>

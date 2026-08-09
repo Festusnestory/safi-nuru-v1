@@ -121,6 +121,10 @@ $router->any('/admin/consultant-list', function (): void {
     (new ConsultantController())->list();
 });
 
+$router->any('/admin/properties-list', function (): void {
+    (new \App\Controllers\Admin\PropertyController())->list();
+});
+
 $router->any('/admin/properties-available', function (): void {
     (new \App\Controllers\Admin\PropertyController())->available();
 });

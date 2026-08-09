@@ -87,6 +87,7 @@ RewriteRule ^admin/consulting-agent-form/?$ public/index.php?__route=admin/consu
 RewriteRule ^admin/admin-consulting-agent-processor/?$ public/index.php?__route=admin/admin-consulting-agent-processor [L,QSA]
 RewriteRule ^admin/consultant-list/?$ public/index.php?__route=admin/consultant-list [L,QSA]
 
+RewriteRule ^admin/properties-list/?$ public/index.php?__route=admin/properties-list [L,QSA]
 RewriteRule ^admin/properties-available/?$ public/index.php?__route=admin/properties-available [L,QSA]
 RewriteRule ^admin/properties-sold/?$ public/index.php?__route=admin/properties-sold [L,QSA]
 RewriteRule ^admin/property-admin-form/?$ public/index.php?__route=admin/property-admin-form [L,QSA]
