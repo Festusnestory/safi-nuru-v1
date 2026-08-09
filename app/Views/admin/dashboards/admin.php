@@ -1,5 +1,6 @@
 <?php
 /** @var string $baseUrl */
+/** @var array $buyerSummary Used by dashboard.php, required below. */
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">

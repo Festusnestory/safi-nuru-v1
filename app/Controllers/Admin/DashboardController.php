@@ -17,9 +17,11 @@ final class DashboardController extends Controller
 {
     // The main admin/manager dashboard (formerly admin.php). Its stats and
     // region-breakdown data are computed by top-bar.php itself (required by
-    // the View below), not here - matching-functions.php is included only
-    // for parity with the legacy page, which loaded it but never called any
-    // of its functions.
+    // the View below). matching-functions.php's own top-level code computes
+    // $buyerSummary (buyer/seller tier-1 price+area matches), which the
+    // View's "matched buyers" table reads directly - it must be passed
+    // through render()'s $data explicitly, since a require here only sets
+    // it as a local variable of this method, not of the View's own scope.
     public function admin(): void
     {
         $this->requireRole(['admin', 'manager']);
@@ -27,6 +29,7 @@ final class DashboardController extends Controller
 
         $this->render('admin.dashboards.admin', [
             'baseUrl' => \App\Core\Router::basePath(),
+            'buyerSummary' => $buyerSummary,
         ]);
     }
 
