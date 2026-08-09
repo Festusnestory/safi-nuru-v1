@@ -61,9 +61,110 @@ RewriteRule ^admin/sellers-profile/?$ public/index.php?__route=admin/sellers-pro
 RewriteRule ^admin/seller-admin-form/?$ public/index.php?__route=admin/seller-admin-form [L,QSA]
 RewriteRule ^admin/seller-admin-processor/?$ public/index.php?__route=admin/seller-admin-processor [L,QSA]
 RewriteRule ^admin/review-seller-application/?$ public/index.php?__route=admin/review-seller-application [L,QSA]
+
+# Internal staff-facing agent management (formerly html/material/{agent_list,
+# agenttable_list,agent_admin_form,admin_agent_processor,agent_profile}.php
+# and html/material/config/{approve_agent_application,delete_agent,
+# update_agent_status}.php) plus the "quick consult" walk-in buyer workflow
+# (formerly html/material/{consulting_agent_form,
+# admin_consulting_agent_processor,consultant_list}.php) - MVC'd behind
+# App\Controllers\Admin\{AgentController,ConsultantController}, old URLs
+# remain supported via thin shims left in place at their original
+# html/material/*.php paths. agenttable_list.php was always a guarded
+# partial with no direct route of its own (see admin/selleragent-table
+# above for the same pattern) - it still 404s when requested directly. Not
+# to be confused with html/material/agent/ (the separate public
+# application form, already served at /agent above).
+RewriteRule ^admin/agent-list/?$ public/index.php?__route=admin/agent-list [L,QSA]
+RewriteRule ^admin/agenttable-list/?$ public/index.php?__route=admin/agenttable-list [L,QSA]
+RewriteRule ^admin/agent-admin-form/?$ public/index.php?__route=admin/agent-admin-form [L,QSA]
+RewriteRule ^admin/admin-agent-processor/?$ public/index.php?__route=admin/admin-agent-processor [L,QSA]
+RewriteRule ^admin/agent-profile/?$ public/index.php?__route=admin/agent-profile [L,QSA]
+RewriteRule ^admin/approve-agent-application/?$ public/index.php?__route=admin/approve-agent-application [L,QSA]
+RewriteRule ^admin/delete-agent/?$ public/index.php?__route=admin/delete-agent [L,QSA]
+RewriteRule ^admin/update-agent-status/?$ public/index.php?__route=admin/update-agent-status [L,QSA]
+RewriteRule ^admin/consulting-agent-form/?$ public/index.php?__route=admin/consulting-agent-form [L,QSA]
+RewriteRule ^admin/admin-consulting-agent-processor/?$ public/index.php?__route=admin/admin-consulting-agent-processor [L,QSA]
+RewriteRule ^admin/consultant-list/?$ public/index.php?__route=admin/consultant-list [L,QSA]
+
 RewriteRule ^admin/properties-available/?$ public/index.php?__route=admin/properties-available [L,QSA]
 RewriteRule ^admin/properties-sold/?$ public/index.php?__route=admin/properties-sold [L,QSA]
 RewriteRule ^admin/property-admin-form/?$ public/index.php?__route=admin/property-admin-form [L,QSA]
+
+# Buyer/seller matching engine (formerly html/material/{match-results,
+# match-table,match-table1,match_list,match_property,matched_sellers,
+# agentsellers_matched,selleragent_table}.php) - MVC'd behind
+# App\Controllers\Admin\MatchingController, old URLs remain supported via
+# thin shims left in place at their original html/material/*.php paths.
+RewriteRule ^admin/match-results/?$ public/index.php?__route=admin/match-results [L,QSA]
+RewriteRule ^admin/match-table/?$ public/index.php?__route=admin/match-table [L,QSA]
+RewriteRule ^admin/match-table1/?$ public/index.php?__route=admin/match-table1 [L,QSA]
+RewriteRule ^admin/match-list/?$ public/index.php?__route=admin/match-list [L,QSA]
+RewriteRule ^admin/match-property/?$ public/index.php?__route=admin/match-property [L,QSA]
+RewriteRule ^admin/matched-sellers/?$ public/index.php?__route=admin/matched-sellers [L,QSA]
+RewriteRule ^admin/agentsellers-matched/?$ public/index.php?__route=admin/agentsellers-matched [L,QSA]
+RewriteRule ^admin/selleragent-table/?$ public/index.php?__route=admin/selleragent-table [L,QSA]
+
+# Reports, analytics, exports, settings, backup/restore, activity log, user
+# management, document streaming, and the public-inquiries review list
+# (formerly html/material/{reports-dashboard,reports-sales,reports-property,
+# reports-agent,reports-custom,analytics,exports,settings-general,
+# settings-email,settings-database,backup-restore,activity-log,
+# user-management,view_document,public-inquiries}.php) - MVC'd behind
+# App\Controllers\Admin\{ReportController,SettingsController,
+# DocumentController,InquiryController}, old URLs remain supported via thin
+# shims left in place at their original html/material/*.php paths.
+RewriteRule ^admin/reports-dashboard/?$ public/index.php?__route=admin/reports-dashboard [L,QSA]
+RewriteRule ^admin/reports-sales/?$ public/index.php?__route=admin/reports-sales [L,QSA]
+RewriteRule ^admin/reports-property/?$ public/index.php?__route=admin/reports-property [L,QSA]
+RewriteRule ^admin/reports-agent/?$ public/index.php?__route=admin/reports-agent [L,QSA]
+RewriteRule ^admin/reports-custom/?$ public/index.php?__route=admin/reports-custom [L,QSA]
+RewriteRule ^admin/analytics/?$ public/index.php?__route=admin/analytics [L,QSA]
+RewriteRule ^admin/exports/?$ public/index.php?__route=admin/exports [L,QSA]
+RewriteRule ^admin/settings-general/?$ public/index.php?__route=admin/settings-general [L,QSA]
+RewriteRule ^admin/settings-email/?$ public/index.php?__route=admin/settings-email [L,QSA]
+RewriteRule ^admin/settings-database/?$ public/index.php?__route=admin/settings-database [L,QSA]
+RewriteRule ^admin/backup-restore/?$ public/index.php?__route=admin/backup-restore [L,QSA]
+RewriteRule ^admin/activity-log/?$ public/index.php?__route=admin/activity-log [L,QSA]
+RewriteRule ^admin/user-management/?$ public/index.php?__route=admin/user-management [L,QSA]
+RewriteRule ^admin/view-document/?$ public/index.php?__route=admin/view-document [L,QSA]
+RewriteRule ^admin/public-inquiries/?$ public/index.php?__route=admin/public-inquiries [L,QSA]
+
+# Agent task allocation lists/detail (formerly html/material/{tasks-pending,
+# tasks-in-progress,tasks-completed,tasks-cancelled,agent-tasks-pending,
+# agent_tasks-in-progress,task_view}.php) plus their JSON mutation endpoints
+# (html/material/config/{assign_agent_task,reassign_task,
+# update_task_progress,agent_update_task_status}.php), and the property
+# checklist/stage system (html/material/{checklist,items,add_items,stages,
+# add_stages}.php and html/material/config/{save_stage,get_stages,
+# save-checklist-item,save_checklist_item}.php) - MVC'd behind
+# App\Controllers\Admin\TaskController, old URLs remain supported via thin
+# shims left in place at their original html/material/*.php paths.
+# config/save-checklist-item.php (agent checklist toggle) and
+# config/save_checklist_item.php (admin checklist item definition) are two
+# distinct legacy endpoints that would collide under this file's usual
+# underscore-to-hyphen naming rule, so the latter is exposed as
+# admin/add-checklist-item instead of a second admin/save-checklist-item.
+RewriteRule ^admin/tasks-pending/?$ public/index.php?__route=admin/tasks-pending [L,QSA]
+RewriteRule ^admin/tasks-in-progress/?$ public/index.php?__route=admin/tasks-in-progress [L,QSA]
+RewriteRule ^admin/tasks-completed/?$ public/index.php?__route=admin/tasks-completed [L,QSA]
+RewriteRule ^admin/tasks-cancelled/?$ public/index.php?__route=admin/tasks-cancelled [L,QSA]
+RewriteRule ^admin/agent-tasks-pending/?$ public/index.php?__route=admin/agent-tasks-pending [L,QSA]
+RewriteRule ^admin/agent-tasks-in-progress/?$ public/index.php?__route=admin/agent-tasks-in-progress [L,QSA]
+RewriteRule ^admin/task-view/?$ public/index.php?__route=admin/task-view [L,QSA]
+RewriteRule ^admin/assign-agent-task/?$ public/index.php?__route=admin/assign-agent-task [L,QSA]
+RewriteRule ^admin/reassign-task/?$ public/index.php?__route=admin/reassign-task [L,QSA]
+RewriteRule ^admin/update-task-progress/?$ public/index.php?__route=admin/update-task-progress [L,QSA]
+RewriteRule ^admin/agent-update-task-status/?$ public/index.php?__route=admin/agent-update-task-status [L,QSA]
+RewriteRule ^admin/checklist/?$ public/index.php?__route=admin/checklist [L,QSA]
+RewriteRule ^admin/items/?$ public/index.php?__route=admin/items [L,QSA]
+RewriteRule ^admin/add-items/?$ public/index.php?__route=admin/add-items [L,QSA]
+RewriteRule ^admin/stages/?$ public/index.php?__route=admin/stages [L,QSA]
+RewriteRule ^admin/add-stages/?$ public/index.php?__route=admin/add-stages [L,QSA]
+RewriteRule ^admin/save-stage/?$ public/index.php?__route=admin/save-stage [L,QSA]
+RewriteRule ^admin/get-stages/?$ public/index.php?__route=admin/get-stages [L,QSA]
+RewriteRule ^admin/save-checklist-item/?$ public/index.php?__route=admin/save-checklist-item [L,QSA]
+RewriteRule ^admin/add-checklist-item/?$ public/index.php?__route=admin/add-checklist-item [L,QSA]
 
 # Uploaded content is stored under web-visible folders for image/video
 # previews. Never let any script-like extension in those folders reach the

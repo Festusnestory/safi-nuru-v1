@@ -1,4 +1,17 @@
 <?php
+// KNOWN DRIFT / CORRECTNESS BUG (flagged during the MVC matching migration,
+// not fixed here): unlike the canonical config/matching-functions.php (see
+// app/Models/Matching.php, which is ported from that file), fetchSellers()
+// below scopes agent_coordinator visibility by seller_personal_details.loaded_by
+// only - it does NOT check assigned_agent_id or agent_task_allocations, so an
+// agent_coordinator who was only assigned a seller property via task
+// allocation (not the original loader) will not see it here. It also omits
+// the buyer's down_payment from the budget calculation and includes
+// 'withdrawn' properties as matchable. As of this migration nothing in the
+// codebase require()s this file directly (confirmed via grep - only
+// matching-functions1.php's sibling matching-functions.php and
+// app/Models/Matching.php are actually used), so it is inert dead code left
+// as-is rather than repointed.
 if (!isset($_SESSION['user_id']))
 {
 	header("location: authentication-login.php");
