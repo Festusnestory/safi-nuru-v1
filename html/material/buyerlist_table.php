@@ -155,7 +155,7 @@ $buyers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 <div class="btn-group">
 													<?php
 											$encodedId = portalEncodeId((int)$buyer['id']);
-													$url = "buyers_profile.php?id=$encodedId";
+													$url = \App\Core\Router::basePath() . "/admin/buyers-profile?id=$encodedId";
 
 													?>
                                                     <a href="<?= $url ?>"

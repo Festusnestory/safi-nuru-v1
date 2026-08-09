@@ -39,6 +39,32 @@ RewriteRule ^buyer/?$ public/index.php?__route=buyer [L,QSA]
 RewriteRule ^seller/?$ public/index.php?__route=seller [L,QSA]
 RewriteRule ^agent/?$ public/index.php?__route=agent [L,QSA]
 
+# Buyer management (formerly html/material/buyers-list.php etc.) - MVC'd
+# behind App\Controllers\Admin\BuyerController, old URLs remain supported
+# via thin shims left in place at their original html/material/*.php paths.
+RewriteRule ^admin/buyers-list/?$ public/index.php?__route=admin/buyers-list [L,QSA]
+RewriteRule ^admin/buyer-admin-form/?$ public/index.php?__route=admin/buyer-admin-form [L,QSA]
+RewriteRule ^admin/admin-buyer-processor/?$ public/index.php?__route=admin/admin-buyer-processor [L,QSA]
+RewriteRule ^admin/buyers-profile/?$ public/index.php?__route=admin/buyers-profile [L,QSA]
+RewriteRule ^admin/approve-buyer/?$ public/index.php?__route=admin/approve-buyer [L,QSA]
+RewriteRule ^admin/delete-buyer/?$ public/index.php?__route=admin/delete-buyer [L,QSA]
+
+# Internal staff-facing seller management (formerly html/material/{sellers-list,
+# sellerlist_table,sellers_profile,seller_admin_form,seller_admin_processor}.php
+# and html/material/config/review_seller_application.php) - MVC'd behind
+# App\Controllers\Admin\SellerController, old URLs remain supported via thin
+# shims left in place at their original html/material/*.php paths. Not to be
+# confused with html/material/seller/ (the separate public application form,
+# already served at /seller above).
+RewriteRule ^admin/sellers-list/?$ public/index.php?__route=admin/sellers-list [L,QSA]
+RewriteRule ^admin/sellers-profile/?$ public/index.php?__route=admin/sellers-profile [L,QSA]
+RewriteRule ^admin/seller-admin-form/?$ public/index.php?__route=admin/seller-admin-form [L,QSA]
+RewriteRule ^admin/seller-admin-processor/?$ public/index.php?__route=admin/seller-admin-processor [L,QSA]
+RewriteRule ^admin/review-seller-application/?$ public/index.php?__route=admin/review-seller-application [L,QSA]
+RewriteRule ^admin/properties-available/?$ public/index.php?__route=admin/properties-available [L,QSA]
+RewriteRule ^admin/properties-sold/?$ public/index.php?__route=admin/properties-sold [L,QSA]
+RewriteRule ^admin/property-admin-form/?$ public/index.php?__route=admin/property-admin-form [L,QSA]
+
 # Uploaded content is stored under web-visible folders for image/video
 # previews. Never let any script-like extension in those folders reach the
 # PHP handler, even if an upstream MIME check is later weakened.
