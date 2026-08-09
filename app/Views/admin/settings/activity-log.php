@@ -27,7 +27,12 @@ $pageTitle = 'Activity Log';
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="border-bottom title-part-padding"><h4 class="card-title mb-0">System Activity (<?= $total ?> events)</h4></div>
+                    <div class="border-bottom title-part-padding d-flex justify-content-between align-items-center">
+                        <h4 class="card-title mb-0">System Activity (<?= $total ?> events)</h4>
+                        <a href="<?= \App\Core\Router::basePath() ?>/admin/activity-log-export" class="btn btn-primary btn-sm">
+                            <i class="mdi mdi-download me-1"></i>Export CSV
+                        </a>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped">

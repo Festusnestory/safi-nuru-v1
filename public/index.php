@@ -223,6 +223,10 @@ $router->any('/admin/activity-log', function (): void {
     (new SettingsController())->activityLog();
 });
 
+$router->any('/admin/activity-log-export', function (): void {
+    (new SettingsController())->activityLogExport();
+});
+
 $router->any('/admin/user-management', function (): void {
     (new SettingsController())->users();
 });

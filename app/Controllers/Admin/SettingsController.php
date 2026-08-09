@@ -382,4 +382,39 @@ final class SettingsController extends Controller
             'logs' => $logs,
         ]);
     }
+
+    // The list view above stays server-side paginated (activity logs can
+    // grow large - loading the whole thing client-side for DataTables would
+    // defeat the point) so export re-runs the same query without the
+    // LIMIT/OFFSET and streams every matching row instead.
+    public function activityLogExport(): void
+    {
+        $this->requireRole(['admin']);
+
+        $stmt = $this->pdo->query('
+            SELECT al.created_at, au.full_name, al.level, al.category, al.action, al.description, al.ip_address
+            FROM activity_log al
+            LEFT JOIN admin_users au ON au.id = al.user_id
+            ORDER BY al.created_at DESC
+        ');
+
+        header('Content-Type: text/csv; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="activity-log-' . date('Y-m-d') . '.csv"');
+        header('Cache-Control: no-store, no-cache, must-revalidate');
+
+        $out = fopen('php://output', 'w');
+        fputcsv($out, ['When', 'User', 'Level', 'Category', 'Action', 'Description', 'IP']);
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            fputcsv($out, [
+                $row['created_at'],
+                $row['full_name'] ?? 'System',
+                ucfirst($row['level']),
+                $row['category'],
+                $row['action'],
+                $row['description'],
+                $row['ip_address'] ?? '',
+            ]);
+        }
+        fclose($out);
+    }
 }

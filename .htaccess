@@ -127,6 +127,7 @@ RewriteRule ^admin/settings-email/?$ public/index.php?__route=admin/settings-ema
 RewriteRule ^admin/settings-database/?$ public/index.php?__route=admin/settings-database [L,QSA]
 RewriteRule ^admin/backup-restore/?$ public/index.php?__route=admin/backup-restore [L,QSA]
 RewriteRule ^admin/activity-log/?$ public/index.php?__route=admin/activity-log [L,QSA]
+RewriteRule ^admin/activity-log-export/?$ public/index.php?__route=admin/activity-log-export [L,QSA]
 RewriteRule ^admin/user-management/?$ public/index.php?__route=admin/user-management [L,QSA]
 RewriteRule ^admin/view-document/?$ public/index.php?__route=admin/view-document [L,QSA]
 RewriteRule ^admin/public-inquiries/?$ public/index.php?__route=admin/public-inquiries [L,QSA]
