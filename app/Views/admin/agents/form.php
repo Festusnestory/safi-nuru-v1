@@ -577,25 +577,17 @@
                       
                       <div class="row">
                         <div class="col-md-6 mb-3">
-                          <label for="residential_town" class="form-label required">Town</label>
-                          <select class="form-select" id="residential_town" name="residential_town" required>
-                            <option value="">Select Town</option>
-                            <option value="Windhoek">Windhoek</option>
-                            <option value="Swakopmund">Swakopmund</option>
-                            <option value="Walvis Bay">Walvis Bay</option>
-                            <option value="Rundu">Rundu</option>
-                            <option value="Oshakati">Oshakati</option>
-                            <option value="Otjiwarongo">Otjiwarongo</option>
-                            <option value="Rehoboth">Rehoboth</option>
-                            <option value="Tsumeb">Tsumeb</option>
-                            <option value="Keetmanshoop">Keetmanshoop</option>
-                            <option value="Oshikango">Oshikango</option>
+                          <label for="residential_region" class="form-label required">Region</label>
+                          <select class="form-select" id="residential_region" name="residential_region" required>
+                            <option value="">Select Region</option>
                           </select>
                           <div class="invalid-feedback"></div>
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="residential_region" class="form-label">Region</label>
-                          <input type="text" class="form-control" id="residential_region" name="residential_region" readonly>
+                          <label for="residential_town" class="form-label required">Town</label>
+                          <select class="form-select" id="residential_town" name="residential_town" required>
+                            <option value="">Select Town</option>
+                          </select>
                           <div class="invalid-feedback"></div>
                         </div>
                       </div>
@@ -918,6 +910,7 @@
     <script src="<?= $baseUrl ?>/dist/js/sidebarmenu.js?v=20260720"></script>
     <script src="<?= $baseUrl ?>/dist/js/feather.min.js"></script>
     <script src="<?= $baseUrl ?>/dist/js/custom.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/js/nuru-regions.js"></script>
  <script>
       const nuruBaseUrl = <?= json_encode($baseUrl) ?>;
       const DateUtils = {
@@ -960,19 +953,6 @@
         return phone;
       };
       
-      // Region mapping for Namibian towns
-      const townToRegion = {
-        'Windhoek': 'Khomas',
-        'Swakopmund': 'Erongo',
-        'Walvis Bay': 'Erongo',
-        'Rundu': 'Kavango East',
-        'Oshakati': 'Oshana',
-        'Otjiwarongo': 'Otjozondjupa',
-        'Rehoboth': 'Khomas',
-        'Tsumeb': 'Oshikoto',
-        'Keetmanshoop': 'Karas',
-        'Oshikango': 'Ohangwena'
-      };
     </script>
     
     <!-- Form Validation -->
@@ -1312,16 +1292,31 @@
           return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         },
         
+        // Region-first: populate the Region select from the canonical
+        // Namibian region/town data, then fill Town in when Region changes
+        // - matches the buyer/seller/public-agent forms' pattern.
         setupTownRegionMapping() {
+          const regionSelect = document.getElementById('residential_region');
           const townSelect = document.getElementById('residential_town');
-          if (townSelect) {
-            townSelect.addEventListener('change', (e) => {
-              const regionInput = document.getElementById('residential_region');
-              if (regionInput) {
-                regionInput.value = townToRegion[e.target.value] || '';
-              }
+          if (!regionSelect || !townSelect) return;
+
+          Object.keys(window.NURU_TOWNS_BY_REGION).sort().forEach(region => {
+            const option = document.createElement('option');
+            option.value = region;
+            option.textContent = region;
+            regionSelect.appendChild(option);
+          });
+
+          regionSelect.addEventListener('change', (e) => {
+            townSelect.innerHTML = '<option value="">Select Town</option>';
+            const towns = window.NURU_TOWNS_BY_REGION[e.target.value] || [];
+            towns.forEach(town => {
+              const option = document.createElement('option');
+              option.value = town;
+              option.textContent = town;
+              townSelect.appendChild(option);
             });
-          }
+          });
         },
         
         setupIncomeCalculation() {

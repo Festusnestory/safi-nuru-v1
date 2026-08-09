@@ -15,7 +15,6 @@ class AgentForm {
     init() {
         this.applyLengthConstraints();
         this.setupEventListeners();
-        this.setupTownRegionMapping();
         this.populateDropdowns();
         this.updateProgressIndicator();
     }
@@ -36,13 +35,17 @@ class AgentForm {
     }
 
     populateDropdowns() {
-        const towns = Object.keys(this.townRegionMapping).sort();
-        ['res_town', 'kin_town', 'emp_town'].forEach(id => {
+        // Region-first: Region selects are populated up front from the
+        // canonical Namibian region/town list (assets/js/nuru-regions.js);
+        // each Town select starts empty and is filled in when its paired
+        // Region changes (see setupEventListeners/updateTownDropdown).
+        const regions = Object.keys(window.NURU_TOWNS_BY_REGION).sort();
+        ['res_region', 'kin_region', 'emp_region'].forEach(id => {
             const select = document.getElementById(id);
-            towns.forEach(town => {
+            regions.forEach(region => {
                 const option = document.createElement('option');
-                option.value = town;
-                option.textContent = town;
+                option.value = region;
+                option.textContent = region;
                 select.appendChild(option);
             });
         });
@@ -86,31 +89,27 @@ class AgentForm {
         document.getElementById('agentForm').addEventListener('submit', (e) => this.handleSubmit(e));
         document.getElementById('gross_income').addEventListener('input', () => this.calculateNetPay());
         document.getElementById('total_deductions').addEventListener('input', () => this.calculateNetPay());
-        document.getElementById('res_town').addEventListener('change', (e) => this.populateRegion(e.target.value, 'res_region'));
-        document.getElementById('kin_town').addEventListener('change', (e) => this.populateRegion(e.target.value, 'kin_region'));
-        document.getElementById('emp_town').addEventListener('change', (e) => this.populateRegion(e.target.value, 'emp_region'));
+        document.getElementById('res_region').addEventListener('change', (e) => this.updateTownDropdown(e.target.value, 'res_town'));
+        document.getElementById('kin_region').addEventListener('change', (e) => this.updateTownDropdown(e.target.value, 'kin_town'));
+        document.getElementById('emp_region').addEventListener('change', (e) => this.updateTownDropdown(e.target.value, 'emp_town'));
         this.setupFileUploadHandlers();
     }
 
-    setupTownRegionMapping() {
-        // Namibian town-to-region mapping used for auto-filling the region field.
-        this.townRegionMapping = {
-            'Windhoek': 'Khomas',
-            'Swakopmund': 'Erongo',
-            'Walvis Bay': 'Erongo',
-            'Rundu': 'Kavango East',
-            'Oshakati': 'Oshana',
-            'Katima Mulilo': 'Zambezi',
-            'Otjiwarongo': 'Otjozondjupa',
-            'Gobabis': 'Omaheke',
-            'Keetmanshoop': 'Karas',
-            'Tsumeb': 'Oshikoto',
-            'Grootfontein': 'Otjozondjupa',
-            'Rehoboth': 'Hardap',
-            'Mariental': 'Hardap',
-            'Okahandja': 'Otjozondjupa',
-            'Ondangwa': 'Oshana'
-        };
+    // Populate a Town select from the canonical region/town data once its
+    // paired Region select has a value - same region-first pattern the
+    // buyer and seller forms use.
+    updateTownDropdown(regionValue, townSelectId) {
+        const townSelect = document.getElementById(townSelectId);
+        if (!townSelect) return;
+
+        townSelect.innerHTML = '<option value="">Select Town</option>';
+        const towns = window.NURU_TOWNS_BY_REGION[regionValue] || [];
+        towns.forEach(town => {
+            const option = document.createElement('option');
+            option.value = town;
+            option.textContent = town;
+            townSelect.appendChild(option);
+        });
     }
 
     setupFileUploadHandlers() {
@@ -308,11 +307,6 @@ class AgentForm {
         }
         netField.value = (grossIncome - deductions).toFixed(2);
         this.validateEmployment();
-    }
-
-    populateRegion(town, regionFieldId) {
-        const regionField = document.getElementById(regionFieldId);
-        if (this.townRegionMapping[town]) regionField.value = this.townRegionMapping[town];
     }
 
     showFieldError(field, message) {

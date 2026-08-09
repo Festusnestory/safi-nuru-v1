@@ -1,23 +1,10 @@
 // Form Data - Dropdowns and data management for Seller Form
 
 const FormDataUtils = {
-    // Namibian regions and towns mapping
-    townsByRegion: {
-        'Zambezi': ['Katima Mulilo', 'Sesheke', 'Bukalo', 'Linyanti', 'Sibinda'],
-        'Erongo': ['Swakopmund', 'Walvis Bay', 'Henties Bay', 'Omaruru', 'Karibib', 'Usakos'],
-        'Hardap': ['Mariental', 'Aranos', 'Gibeon', 'Hoachanas', 'Kalkrand', 'Rehoboth'],
-        'Karas': ['Keetmanshoop', 'Lüderitz', 'Oranjemund', 'Karasburg', 'Bethanie', 'Aus'],
-        'Kavango East': ['Rundu', 'Divundu', 'Bagani', 'Mukwe', 'Sauyemwa'],
-        'Kavango West': ['Nkurenkuru', 'Tondoro', 'Mpungu', 'Kapako'],
-        'Khomas': ['Windhoek', 'Rehoboth', 'Okahandja', 'Dordabis'],
-        'Kunene': ['Opuwo', 'Outjo', 'Khorixas', 'Kamanjab', 'Sesfontein'],
-        'Ohangwena': ['Eenhana', 'Okongo', 'Engela', 'Endola', 'Omundaungilo'],
-        'Omaheke': ['Gobabis', 'Witvlei', 'Leonardville', 'Steinhausen', 'Otjinene'],
-        'Omusati': ['Outapi', 'Okahao', 'Oshikuku', 'Ruacana', 'Tsandi'],
-        'Oshana': ['Oshakati', 'Ongwediva', 'Ondangwa', 'Okatana', 'Uukwiyu Uushona'],
-        'Oshikoto': ['Omuthiya', 'Tsumeb', 'Oniipa', 'Ompundja', 'Onayena'],
-        'Otjozondjupa': ['Otjiwarongo', 'Grootfontein', 'Okakarara', 'Otavi', 'Okahandja']
-    },
+    // Namibian regions and towns mapping - canonical data, shared with every
+    // other form. Loaded from assets/js/nuru-regions.js (see
+    // html/material/seller/index.php), which must load before this file.
+    townsByRegion: window.NURU_TOWNS_BY_REGION,
 
     // Nationalities list
     nationalities: [

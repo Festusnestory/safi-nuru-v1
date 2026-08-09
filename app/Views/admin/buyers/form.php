@@ -1266,7 +1266,8 @@
     <script src="<?= $baseUrl ?>/dist/js/sidebarmenu.js?v=20260720"></script>
     <script src="<?= $baseUrl ?>/dist/js/feather.min.js"></script>
     <script src="<?= $baseUrl ?>/dist/js/custom.min.js"></script>
-    
+    <script src="<?= $baseUrl ?>/assets/js/nuru-regions.js"></script>
+
      <script>
     // ============================================
     // UTILITY FUNCTIONS
@@ -1306,7 +1307,7 @@
         regions: [
             'Erongo',
             'Hardap',
-            'Karas (Karas)',
+            'Karas',
             'Kavango East',
             'Kavango West',
             'Khomas',
@@ -1319,23 +1320,10 @@
             'Otjozondjupa',
             'Zambezi'
         ],
-        
-        townsByRegion: {
-            'Erongo': ['Swakopmund', 'Walvis Bay', 'Arandis', 'Henties Bay', 'Okahandja', 'Karibib', 'Uis', 'Omaruru'],
-            'Hardap': ['Mariental', 'Rehoboth', 'Gibeon', 'Mariental Rural', 'Bethanie', 'Keetmanshoop'],
-            'Karas (Karas)': ['Keetmanshoop', 'Luderitz', 'Mariental', 'Bethanie', 'Aus', 'Gochas', 'Aranos'],
-            'Kavango East': ['Rundu', 'Ndiyona', 'Mashare', 'Kakoro', 'Kapupos', 'Mpungu'],
-            'Kavango West': ['Nkurenkuru', 'Katurar', 'Kangwer', 'Tondoro', 'Mabonde'],
-            'Khomas': ['Windhoek', 'Okahandja', 'Klein Windhoek', 'Eros', 'Luxushügel', 'Pionierspark'],
-            'Kunene': ['Opuwo', 'Khorixas', 'Outjo', 'Kamanjab', 'Sesfontein', 'Omatjette'],
-            'Ohangwena': ['Eenhana', 'Ohangwena', 'Omunghele', 'Epupa', 'Okongo', 'Omunda'],
-            'Omaheke': ['Gobabis', 'Steinhausen', 'Buitepos', 'Draai', 'Gerus', 'Koës'],
-            'Omusati': ['Outapi', 'Omakunde', 'Ruacana', 'Tshandi', 'Uuthandi', 'Okaku'],
-            'Oshana': ['Oshakati', 'Ondangwa', 'Ombala', 'Oshikuku', 'Uunert', 'Okaku'],
-            'Oshikoto': ['Tsumeb', 'Grootfontein', 'Otavi', 'Okahi', 'Omatjette', 'Nakop'],
-            'Otjozondjupa': ['Otjiwarongo', 'Grootfontein', 'Okahandja', 'Dwarstreek', 'Kalkfeld', 'Okozondjo'],
-            'Zambezi': ['Katima Mulilo', 'Linyanti', 'Sesheke', 'Kabbe', 'Lusikwando']
-        },
+
+        // Canonical data, shared with every other form - see
+        // assets/js/nuru-regions.js (loaded before this script block).
+        townsByRegion: window.NURU_TOWNS_BY_REGION,
         
         nationalities: [
             'Namibian',

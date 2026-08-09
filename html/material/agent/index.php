@@ -217,15 +217,18 @@ $baseUrl = \App\Core\Router::basePath();
                                 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
+                                        <label for="res_region" class="form-label required">Region</label>
+                                        <select class="form-select" id="res_region" name="region" required>
+                                            <option value="">Select Region</option>
+                                        </select>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
                                         <label for="res_town" class="form-label required">Town</label>
                                         <select class="form-select" id="res_town" name="town" required>
                                             <option value="">Select Town</option>
                                         </select>
                                         <div class="invalid-feedback"></div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="res_region" class="form-label">Region</label>
-                                        <input type="text" class="form-control" id="res_region" name="region" readonly>
                                     </div>
                                 </div>
                                 
@@ -309,14 +312,16 @@ $baseUrl = \App\Core\Router::basePath();
                                 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
+                                        <label for="kin_region" class="form-label">Region</label>
+                                        <select class="form-select" id="kin_region" name="kin_region">
+                                            <option value="">Select Region</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
                                         <label for="kin_town" class="form-label">Town</label>
                                         <select class="form-select" id="kin_town" name="kin_town">
                                             <option value="">Select Town</option>
                                         </select>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="kin_region" class="form-label">Region</label>
-                                        <input type="text" class="form-control" id="kin_region" name="kin_region" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -409,17 +414,19 @@ $baseUrl = \App\Core\Router::basePath();
                                         <input type="text" class="form-control" id="emp_location" name="emp_location">
                                     </div>
                                     <div class="col-md-6 mb-3">
+                                        <label for="emp_region" class="form-label">Region</label>
+                                        <select class="form-select" id="emp_region" name="emp_region">
+                                            <option value="">Select Region</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label for="emp_town" class="form-label">Town</label>
                                         <select class="form-select" id="emp_town" name="emp_town">
                                             <option value="">Select Town</option>
                                         </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="emp_region" class="form-label">Region</label>
-                                        <input type="text" class="form-control" id="emp_region" name="emp_region" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -616,6 +623,7 @@ $baseUrl = \App\Core\Router::basePath();
     </div>
     
     <!-- Agent Form JS -->
+    <script src="<?= $baseUrl ?>/assets/js/nuru-regions.js"></script>
     <script src="<?= $baseUrl ?>/html/material/agent/js/agent-form.js?v=<?= filemtime(__DIR__ . '/js/agent-form.js') ?>"></script>
 </body>
 </html>

@@ -1069,6 +1069,7 @@ $baseUrl = \App\Core\Router::basePath();
 
     <!-- Scripts -->
     <script src="<?= $baseUrl ?>/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/js/nuru-regions.js"></script>
     <script src="<?= $baseUrl ?>/html/material/seller/js/form-data.js?v=<?= filemtime(__DIR__ . '/js/form-data.js') ?>"></script>
     <script src="<?= $baseUrl ?>/html/material/seller/js/form-validation.js?v=<?= filemtime(__DIR__ . '/js/form-validation.js') ?>"></script>
     <script src="<?= $baseUrl ?>/html/material/seller/js/form-steps.js?v=<?= filemtime(__DIR__ . '/js/form-steps.js') ?>"></script>

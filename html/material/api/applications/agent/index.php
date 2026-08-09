@@ -97,12 +97,28 @@ function validateAgentApplication(PDO $pdo, array &$data): void
         $data[$phoneField] = $normalised;
     }
 
+    // Must stay in sync with the canonical client-side data in
+    // assets/js/nuru-regions.js - keep both lists identical.
     $townRegions = [
-        'Windhoek' => 'Khomas', 'Swakopmund' => 'Erongo', 'Walvis Bay' => 'Erongo',
-        'Rundu' => 'Kavango East', 'Oshakati' => 'Oshana', 'Katima Mulilo' => 'Zambezi',
-        'Otjiwarongo' => 'Otjozondjupa', 'Gobabis' => 'Omaheke', 'Keetmanshoop' => 'Karas',
-        'Tsumeb' => 'Oshikoto', 'Grootfontein' => 'Otjozondjupa', 'Rehoboth' => 'Hardap',
-        'Mariental' => 'Hardap', 'Okahandja' => 'Otjozondjupa', 'Ondangwa' => 'Oshana',
+        'Windhoek' => 'Khomas', 'Dordabis' => 'Khomas', 'Groot Aub' => 'Khomas',
+        'Swakopmund' => 'Erongo', 'Walvis Bay' => 'Erongo', 'Henties Bay' => 'Erongo',
+        'Arandis' => 'Erongo', 'Usakos' => 'Erongo', 'Karibib' => 'Erongo', 'Omaruru' => 'Erongo',
+        'Oshakati' => 'Oshana', 'Ondangwa' => 'Oshana', 'Ongwediva' => 'Oshana',
+        'Rundu' => 'Kavango East', 'Mashare' => 'Kavango East', 'Ndiyona' => 'Kavango East',
+        'Nkurenkuru' => 'Kavango West', 'Mpungu' => 'Kavango West',
+        'Katima Mulilo' => 'Zambezi', 'Bukalo' => 'Zambezi', 'Linyanti' => 'Zambezi',
+        'Otjiwarongo' => 'Otjozondjupa', 'Grootfontein' => 'Otjozondjupa',
+        'Okahandja' => 'Otjozondjupa', 'Okakarara' => 'Otjozondjupa',
+        'Keetmanshoop' => 'Karas', 'Luderitz' => 'Karas', 'Karasburg' => 'Karas',
+        'Oranjemund' => 'Karas', 'Rosh Pinah' => 'Karas', 'Bethanie' => 'Karas', 'Aus' => 'Karas',
+        'Gobabis' => 'Omaheke', 'Aminuis' => 'Omaheke', 'Otjinene' => 'Omaheke',
+        'Outapi' => 'Omusati', 'Oshikuku' => 'Omusati', 'Ruacana' => 'Omusati',
+        'Okahao' => 'Omusati', 'Tsandi' => 'Omusati',
+        'Tsumeb' => 'Oshikoto', 'Omuthiya' => 'Oshikoto', 'Oniipa' => 'Oshikoto', 'Onayena' => 'Oshikoto',
+        'Eenhana' => 'Ohangwena', 'Ongenga' => 'Ohangwena', 'Okongo' => 'Ohangwena', 'Engela' => 'Ohangwena',
+        'Mariental' => 'Hardap', 'Rehoboth' => 'Hardap', 'Maltahohe' => 'Hardap',
+        'Aranos' => 'Hardap', 'Gibeon' => 'Hardap',
+        'Opuwo' => 'Kunene', 'Khorixas' => 'Kunene', 'Outjo' => 'Kunene', 'Kamanjab' => 'Kunene',
     ];
     if (!isset($townRegions[$data['town']]) || $townRegions[$data['town']] !== $data['region']) {
         throw new AgentApplicationValidationException('Please select a valid residential town.');

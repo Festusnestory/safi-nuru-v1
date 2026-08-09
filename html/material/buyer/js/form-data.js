@@ -7,23 +7,10 @@ const FormData = {
         'Oshana', 'Oshikoto', 'Otjozondjupa', 'Zambezi'
     ],
 
-    // Towns by region
-    townsByRegion: {
-        'Erongo': ['Walvis Bay', 'Swakopmund', 'Henties Bay', 'Omaruru', 'Karibib', 'Usakos'],
-        'Hardap': ['Mariental', 'Rehoboth', 'Aranos', 'Gibeon', 'Hoachanas'],
-        'Karas': ['Keetmanshoop', 'Karasburg', 'Luderitz', 'Oranjemund', 'Warmbad'],
-        'Kavango East': ['Rundu', 'Divundu', 'Bagani', 'Mukwe'],
-        'Kavango West': ['Nkurenkuru', 'Tondoro', 'Kapako'],
-        'Khomas': ['Windhoek', 'Okahandja', 'Rehoboth'],
-        'Kunene': ['Opuwo', 'Khorixas', 'Outjo', 'Kamanjab'],
-        'Ohangwena': ['Eenhana', 'Ohangwena', 'Okongo'],
-        'Omaheke': ['Gobabis', 'Witvlei', 'Leonardville'],
-        'Omusati': ['Outapi', 'Okahao', 'Oshikuku', 'Ruacana'],
-        'Oshana': ['Oshakati', 'Ondangwa', 'Ongwediva'],
-        'Oshikoto': ['Omuthiya', 'Tsumeb', 'Oniipa'],
-        'Otjozondjupa': ['Otjiwarongo', 'Grootfontein', 'Okakarara'],
-        'Zambezi': ['Katima Mulilo', 'Linyanti', 'Sibbinda']
-    },
+    // Towns by region - canonical data, shared with every other form.
+    // Loaded from assets/js/nuru-regions.js (see html/material/buyer/index.php),
+    // which must be included before this file.
+    townsByRegion: window.NURU_TOWNS_BY_REGION,
 
     // World nationalities
     nationalities: [

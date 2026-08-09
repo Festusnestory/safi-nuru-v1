@@ -297,6 +297,7 @@ $baseUrl = \App\Core\Router::basePath();
 
     <!-- Scripts -->
     <script src="<?= $baseUrl ?>/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/js/nuru-regions.js"></script>
     <script src="<?= $baseUrl ?>/html/material/buyer/js/form-data.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-data.js'); ?>"></script>
     <script src="<?= $baseUrl ?>/html/material/buyer/js/form-steps.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-steps.js'); ?>"></script>
     <script src="<?= $baseUrl ?>/html/material/buyer/js/form-validation.js?v=<?php echo (int)filemtime(__DIR__ . '/js/form-validation.js'); ?>"></script>

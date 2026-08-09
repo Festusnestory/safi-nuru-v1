@@ -1639,7 +1639,8 @@
     <script src="<?= $baseUrl ?>/dist/js/sidebarmenu.js?v=20260720"></script>
     <script src="<?= $baseUrl ?>/dist/js/feather.min.js"></script>
     <script src="<?= $baseUrl ?>/dist/js/custom.min.js"></script>
-    
+    <script src="<?= $baseUrl ?>/assets/js/nuru-regions.js"></script>
+
     <!-- Form Data Configuration - renamed to avoid conflict with native FormData -->
     <script>
     // Absolute so the processor endpoint resolves correctly regardless of
@@ -1648,22 +1649,9 @@
     const nuruSellerAdminFormBaseUrl = <?= json_encode($baseUrl) ?>;
     // Form Data - Dropdowns and data management for Seller Form
     const AppFormData = {
-        townsByRegion: {
-            'Zambezi': ['Katima Mulilo', 'Sesheke', 'Bukalo', 'Linyanti', 'Sibinda'],
-            'Erongo': ['Swakopmund', 'Walvis Bay', 'Henties Bay', 'Omaruru', 'Karibib', 'Usakos'],
-            'Hardap': ['Mariental', 'Aranos', 'Gibeon', 'Hoachanas', 'Kalkrand', 'Rehoboth'],
-            'Karas': ['Keetmanshoop', 'Lüderitz', 'Oranjemund', 'Karasburg', 'Bethanie', 'Aus'],
-            'Kavango East': ['Rundu', 'Divundu', 'Bagani', 'Mukwe', 'Sauyemwa'],
-            'Kavango West': ['Nkurenkuru', 'Tondoro', 'Mpungu', 'Kapako'],
-            'Khomas': ['Windhoek', 'Rehoboth', 'Okahandja', 'Dordabis'],
-            'Kunene': ['Opuwo', 'Outjo', 'Khorixas', 'Kamanjab', 'Sesfontein'],
-            'Ohangwena': ['Eenhana', 'Okongo', 'Engela', 'Endola', 'Omundaungilo'],
-            'Omaheke': ['Gobabis', 'Witvlei', 'Leonardville', 'Steinhausen', 'Otjinene'],
-            'Omusati': ['Outapi', 'Okahao', 'Oshikuku', 'Ruacana', 'Tsandi'],
-            'Oshana': ['Oshakati', 'Ongwediva', 'Ondangwa', 'Okatana', 'Uukwiyu Uushona'],
-            'Oshikoto': ['Omuthiya', 'Tsumeb', 'Oniipa', 'Ompundja', 'Onayena'],
-            'Otjozondjupa': ['Otjiwarongo', 'Grootfontein', 'Okakarara', 'Otavi', 'Okahandja']
-        },
+        // Canonical data, shared with every other form - see
+        // assets/js/nuru-regions.js (loaded before this script block).
+        townsByRegion: window.NURU_TOWNS_BY_REGION,
         nationalities: [
             'Namibian', 'South African', 'Angolan', 'Zambian', 'Zimbabwean', 'Botswanan',
             'British', 'German', 'Dutch', 'Portuguese', 'American', 'Canadian', 'Australian',
