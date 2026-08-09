@@ -33,6 +33,7 @@ final class PropertyController extends Controller
         $this->render('admin.properties.list', [
             'properties' => $properties,
             'words' => $words,
+            'baseUrl' => Router::basePath(),
         ]);
     }
 
