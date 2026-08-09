@@ -5,6 +5,8 @@
  * html/material/ root after session_start().
  */
 
+require_once __DIR__ . '/../../../app/autoload.php';
+
 function currentRole(): string
 {
     return $_SESSION['role'] ?? '';
@@ -54,10 +56,15 @@ function roleDisplayName(): string
     };
 }
 
-/** Default landing page for the authoritative session role. */
+/**
+ * Default landing page for the authoritative session role, resolved to a
+ * full URL - the migrated admin dashboard's clean /admin/dashboard route
+ * where one exists (via Router::legacyUrl()), the absolute legacy path
+ * otherwise. Callers should use this directly; it is not a bare filename.
+ */
 function roleHomeRoute(): string
 {
-    return match (currentRole()) {
+    $target = match (currentRole()) {
         'admin' => 'admin.php',
         'manager' => 'dashboard_2.php',
         'agent_coordinator' => 'dashboard_3.php',
@@ -66,6 +73,7 @@ function roleHomeRoute(): string
         'seller' => 'dashboard_5.php',
         default => 'authentication-login.php',
     };
+    return \App\Core\Router::legacyUrl($target);
 }
 
 /** Explain an authorization redirect on the destination dashboard. */
@@ -118,7 +126,7 @@ function requireRole(array $allowedRoles): void
     $_SESSION['session_version'] = (int)$authoritativeUser['session_version'];
 
     if (!in_array(currentRole(), $allowedRoles, true)) {
-        header('Location: ' . portalPath(roleHomeRoute()) . '?access=denied', true, 303);
+        header('Location: ' . roleHomeRoute() . '?access=denied', true, 303);
         exit;
     }
 

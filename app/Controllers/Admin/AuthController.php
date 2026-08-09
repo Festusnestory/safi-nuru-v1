@@ -174,7 +174,10 @@ final class AuthController
             // the legacy html/material/authentication-login.php URL or the
             // clean /login route (public/index.php) - a relative target
             // resolves differently depending on which one served the page.
-            $redirect = \App\Core\Router::basePath() . '/html/material/' . $target;
+            // legacyUrl() sends admin.php to its migrated /admin/dashboard
+            // route; the rest (still-unmigrated dashboard_N.php,
+            // change-password.php) fall back to their absolute legacy path.
+            $redirect = \App\Core\Router::legacyUrl($target);
 
             $this->loginResponse(200, 'success', 'Login successful.', $redirect);
         } catch (\Throwable $error) {
@@ -508,7 +511,7 @@ final class AuthController
                     $_SESSION['session_version'] = (int) $currentUser['session_version'] + 1;
                     session_regenerate_id(true);
 
-                    $redirect = match ($_SESSION['role'] ?? '') {
+                    $target = match ($_SESSION['role'] ?? '') {
                         'buyer' => 'dashboard_1.php',
                         'manager' => 'dashboard_2.php',
                         'agent_coordinator' => 'dashboard_3.php',
@@ -517,7 +520,7 @@ final class AuthController
                         'admin' => 'admin.php',
                         default => 'authentication-login.php',
                     };
-                    header('Location: ' . $redirect);
+                    header('Location: ' . \App\Core\Router::legacyUrl($target));
                     exit;
                 }
             }
