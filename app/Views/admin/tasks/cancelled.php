@@ -276,6 +276,16 @@ $reassignEndpoint = \portalPath('config/reassign_task.php');
 
     <!--This page plugins -->
     <script src="<?= $baseUrl ?>/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTables Buttons extension (Copy/CSV/Excel/PDF/Print export) - not
+     vendored locally, loaded the same way the login page's Cloudflare
+     Turnstile widget already is. -->
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <!-- start - This is for export functionality only -->
 	<link href="<?= $baseUrl ?>/assets/libs/select2/dist/css/select2.min.css" rel="stylesheet" />
 <script src="<?= $baseUrl ?>/assets/libs/select2/dist/js/select2.min.js"></script>
@@ -285,6 +295,7 @@ $reassignEndpoint = \portalPath('config/reassign_task.php');
 $(".table-bordered").DataTable({
   dom: "Bfrtip",
   buttons: ["copy", "csv", "excel", "pdf", "print"],
+  language: { emptyTable: "No records found." },
 });
 $(
   ".buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel"

@@ -73,7 +73,7 @@ $pageTitle = 'User Management';
                     <div class="border-bottom title-part-padding"><h4 class="card-title mb-0">All Users</h4></div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th>Actions</th></tr>
                                 </thead>

@@ -17,8 +17,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
     <title>Website Enquiries - Nuru</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/images/favicon.png">
-    <link href="../../dist/css/style.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= $baseUrl ?>/assets/images/favicon.png">
+    <link href="<?= $baseUrl ?>/dist/css/style.min.css" rel="stylesheet">
     <style>
         .inquiry-message { min-width: 260px; max-width: 420px; white-space: normal; }
         .inquiry-contact { min-width: 210px; }
@@ -76,7 +76,7 @@
                     </nav>
 
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle">
+                        <table class="table table-hover align-middle table-bordered">
                             <thead>
                             <tr>
                                 <th>Date</th>
@@ -139,13 +139,6 @@
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
-                            <?php if (!$inquiries): ?>
-                                <tr>
-                                    <td colspan="7" class="text-center py-5 text-muted">
-                                        <?= $filter === 'all' ? 'No website enquiries yet.' : 'No enquiries have this status.' ?>
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -156,15 +149,33 @@
     </div>
 </div>
 
-<script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
-<script src="../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../dist/js/app.min.js"></script>
-<script src="../../dist/js/app.init.js"></script>
-<script src="../../dist/js/app-style-switcher.js"></script>
-<script src="../../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-<script src="../../dist/js/waves.js"></script>
-<script src="../../dist/js/sidebarmenu.js?v=20260720"></script>
-    <script src="../../dist/js/feather.min.js"></script>
-    <script src="../../dist/js/custom.min.js"></script>
+<script src="<?= $baseUrl ?>/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="<?= $baseUrl ?>/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= $baseUrl ?>/dist/js/app.min.js"></script>
+<script src="<?= $baseUrl ?>/dist/js/app.init.js"></script>
+<script src="<?= $baseUrl ?>/dist/js/app-style-switcher.js"></script>
+<script src="<?= $baseUrl ?>/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+<script src="<?= $baseUrl ?>/dist/js/waves.js"></script>
+<script src="<?= $baseUrl ?>/dist/js/sidebarmenu.js?v=20260720"></script>
+    <script src="<?= $baseUrl ?>/dist/js/feather.min.js"></script>
+    <script src="<?= $baseUrl ?>/dist/js/custom.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Buttons extension (Copy/CSV/Excel/PDF/Print export) - not
+         vendored locally, loaded the same way the login page's Cloudflare
+         Turnstile widget already is. -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script>
+    $(".table-bordered").DataTable({
+        dom: "Bfrtip",
+        buttons: ["copy", "csv", "excel", "pdf", "print"],
+  language: { emptyTable: "No records found." },
+    });
+    $(".buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel").addClass("btn btn-primary mr-1");
+    </script>
 </body>
 </html>

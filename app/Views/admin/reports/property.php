@@ -55,9 +55,6 @@ $pageTitle = 'Property Report';
                                             <td><?= date('d M Y', strtotime($p['created_at'])) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
-                                    <?php if (empty($properties)): ?>
-                                        <tr><td colspan="6" class="text-center text-muted">No properties found.</td></tr>
-                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

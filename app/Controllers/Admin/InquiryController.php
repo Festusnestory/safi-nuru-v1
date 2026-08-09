@@ -94,6 +94,7 @@ final class InquiryController extends Controller
         $totalInquiries = array_sum($statusCounts);
 
         $this->render('admin.inquiries.list', [
+            'baseUrl' => \App\Core\Router::basePath(),
             'allowedStatuses' => self::ALLOWED_STATUSES,
             'statusLabels' => [
                 'new' => 'New',

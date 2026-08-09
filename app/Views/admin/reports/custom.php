@@ -72,9 +72,6 @@ $pageTitle = 'Custom Report';
                                     <?php foreach ($rows as $row): ?>
                                         <tr><?php foreach ($config['cols'] as $c): ?><td><?= htmlspecialchars((string)$row[$c]) ?></td><?php endforeach; ?></tr>
                                     <?php endforeach; ?>
-                                    <?php if (empty($rows)): ?>
-                                        <tr><td colspan="<?= count($config['cols']) ?>" class="text-center text-muted">No results for this filter.</td></tr>
-                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

@@ -64,15 +64,12 @@ $pageTitle = 'Reports Dashboard';
                         <h4 class="card-title mb-0">Properties by Region</h4>
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped">
+                        <table class="table table-striped table-bordered">
                             <thead><tr><th>Region</th><th>Properties</th></tr></thead>
                             <tbody>
                                 <?php foreach ($byRegion as $row): ?>
                                     <tr><td><?= htmlspecialchars($row['region']) ?></td><td><?= $row['total'] ?></td></tr>
                                 <?php endforeach; ?>
-                                <?php if (empty($byRegion)): ?>
-                                    <tr><td colspan="2" class="text-center text-muted">No data yet.</td></tr>
-                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>

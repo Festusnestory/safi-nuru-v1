@@ -24,23 +24,23 @@
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="../../assets/images/favicon.png"
+      href="<?= $baseUrl ?>/assets/images/favicon.png"
     />
     <link
       rel="stylesheet"
-      href="../../assets/libs/apexcharts/dist/apexcharts.css"
+      href="<?= $baseUrl ?>/assets/libs/apexcharts/dist/apexcharts.css"
     />
     <link
-      href="../../assets/extra-libs/css-chart/css-chart.css"
+      href="<?= $baseUrl ?>/assets/extra-libs/css-chart/css-chart.css"
       rel="stylesheet"
     />
     <!-- Vector CSS -->
     <link
-      href="../../assets/libs/jvectormap/jquery-jvectormap.css"
+      href="<?= $baseUrl ?>/assets/libs/jvectormap/jquery-jvectormap.css"
       rel="stylesheet"
     />
     <!-- Custom CSS -->
-    <link href="../../dist/css/style.min.css" rel="stylesheet" />
+    <link href="<?= $baseUrl ?>/dist/css/style.min.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -182,31 +182,42 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- apps -->
-    <script src="../../dist/js/app.min.js"></script>
-    <script src="../../dist/js/app.init.js"></script>
-    <script src="../../dist/js/app-style-switcher.js"></script>
+    <script src="<?= $baseUrl ?>/dist/js/app.min.js"></script>
+    <script src="<?= $baseUrl ?>/dist/js/app.init.js"></script>
+    <script src="<?= $baseUrl ?>/dist/js/app-style-switcher.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="../../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-    <script src="../../assets/extra-libs/sparkline/sparkline.js"></script>
+    <script src="<?= $baseUrl ?>/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/extra-libs/sparkline/sparkline.js"></script>
     <!--Wave Effects -->
-    <script src="../../dist/js/waves.js"></script>
+    <script src="<?= $baseUrl ?>/dist/js/waves.js"></script>
     <!--Menu sidebar -->
-    <script src="../../dist/js/sidebarmenu.js?v=20260720"></script>
+    <script src="<?= $baseUrl ?>/dist/js/sidebarmenu.js?v=20260720"></script>
     <!--Custom JavaScript -->
-    <script src="../../dist/js/feather.min.js"></script>
-    <script src="../../dist/js/custom.min.js"></script>
+    <script src="<?= $baseUrl ?>/dist/js/feather.min.js"></script>
+    <script src="<?= $baseUrl ?>/dist/js/custom.min.js"></script>
     <!--This page JavaScript -->
-    <script src="../../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <!--This page plugins -->
-    <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="<?= $baseUrl ?>/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTables Buttons extension (Copy/CSV/Excel/PDF/Print export) - not
+     vendored locally, loaded the same way the login page's Cloudflare
+     Turnstile widget already is. -->
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script>
 $(".table-bordered").DataTable({
   dom: "Bfrtip",
   buttons: ["copy", "csv", "excel", "pdf", "print"],
+  language: { emptyTable: "No records found." },
 });
 $(
   ".buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel"

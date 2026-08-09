@@ -44,9 +44,6 @@ $pageTitle = 'Agent Performance Report';
                                             <td><?= $rate ?>%</td>
                                         </tr>
                                     <?php endforeach; ?>
-                                    <?php if (empty($agents)): ?>
-                                        <tr><td colspan="6" class="text-center text-muted">No agents found.</td></tr>
-                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

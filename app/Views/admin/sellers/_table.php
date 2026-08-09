@@ -99,12 +99,6 @@ if (!defined('NURU_SELLER_LIST_INCLUDE')) {
                                             </td>
 									</tr>
 								<?php endforeach; ?>
-							<?php else: ?>
-								<tr>
-									<td colspan="10" class="text-center text-muted">
-										No sellers found.
-									</td>
-								</tr>
 							<?php endif; ?>
 							</tbody>
 						</table>

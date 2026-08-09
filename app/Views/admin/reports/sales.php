@@ -68,9 +68,6 @@ $pageTitle = 'Sales Report';
                                             <td><?= $s['sale_date'] ? date('d M Y', strtotime($s['sale_date'])) : '' ?></td>
                                         </tr>
                                     <?php endforeach; ?>
-                                    <?php if (empty($sales)): ?>
-                                        <tr><td colspan="7" class="text-center text-muted">No sales recorded yet.</td></tr>
-                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

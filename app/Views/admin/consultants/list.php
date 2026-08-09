@@ -52,9 +52,6 @@ if (\App\Core\Auth::isFullAccess()) {
                                             <td><a href="<?= $baseUrl ?>/html/material/buyers_profile.php?id=<?= portalEncodeId((int)$b['id']) ?>" class="btn btn-sm btn-info">View</a></td>
                                         </tr>
                                     <?php endforeach; ?>
-                                    <?php if (empty($buyers)): ?>
-                                        <tr><td colspan="9" class="text-center text-muted">No walk-in consultations recorded yet.</td></tr>
-                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
