@@ -1,5 +1,6 @@
 <?php
 $__sidebarRole = currentRole();
+require_once __DIR__ . '/../../app/autoload.php'; $__nuruBase = \App\Core\Router::basePath();
 $__sidebarHome = $__sidebarRole === 'manager' ? 'dashboard_2.php' : 'admin.php';
 $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
 ?>
@@ -7,10 +8,10 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
     <!-- Sidebar scroll-->
     <div class="scroll-sidebar">
         <!-- User profile -->
-        <div class="user-profile position-relative" style="background: url(../../assets/images/background/user-info.jpg) no-repeat;">
+        <div class="user-profile position-relative" style="background: url(<?= $__nuruBase ?>/assets/images/background/user-info.jpg) no-repeat;">
             <!-- User profile image -->
             <div class="profile-img">
-                <img src="../../assets/images/users/profile.png" alt="user" class="w-100" />
+                <img src="<?= $__nuruBase ?>/assets/images/users/profile.png" alt="user" class="w-100" />
             </div>
             <!-- User profile text-->
             <div class="profile-text pt-1 dropdown">
@@ -18,12 +19,12 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     <?= htmlspecialchars($__sidebarName) ?>
                 </a>
                 <div class="dropdown-menu animated flipInY" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="change-password.php">
+                    <a class="dropdown-item" href="<?= $__nuruBase ?>/html/material/change-password.php">
                         <i data-feather="key" class="feather-sm text-warning me-1 ms-1"></i>
                         Change password
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="./config/logout.php">
+                    <a class="dropdown-item" href="<?= $__nuruBase ?>/html/material/config/logout.php">
                         <i data-feather="log-out" class="feather-sm text-danger me-1 ms-1"></i>
                         Logout
                     </a>
@@ -42,7 +43,7 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                 
                 <!-- Dashboard -->
                 <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= $__sidebarHome ?>" aria-expanded="false">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= $__nuruBase ?>/html/material/<?= $__sidebarHome ?>" aria-expanded="false">
                         <i class="mdi mdi-view-dashboard"></i>
                         <span class="hide-menu">Dashboard</span>
                     </a>
@@ -56,13 +57,13 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="buyers-list.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/buyers-list.php" class="sidebar-link">
                                 <i class="mdi mdi-format-list-bulleted"></i>
                                 <span class="hide-menu">List Buyers</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="buyer_admin_form.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/buyer_admin_form.php" class="sidebar-link">
                                 <i class="mdi mdi-account-plus"></i>
                                 <span class="hide-menu">Add Buyer</span>
                             </a>
@@ -78,13 +79,13 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="sellers-list.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/sellers-list.php" class="sidebar-link">
                                 <i class="mdi mdi-format-list-bulleted"></i>
                                 <span class="hide-menu">List Sellers</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="seller_admin_form.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/seller_admin_form.php" class="sidebar-link">
                                 <i class="mdi mdi-home-plus"></i>
                                 <span class="hide-menu">Add Seller</span>
                             </a>
@@ -100,13 +101,13 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="agent_list.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/agent_list.php" class="sidebar-link">
                                 <i class="mdi mdi-format-list-bulleted"></i>
                                 <span class="hide-menu">Agents List </span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="agent_admin_form.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/agent_admin_form.php" class="sidebar-link">
                                 <i class="mdi mdi-account-plus"></i>
                                 <span class="hide-menu">Add Agent</span>
                             </a>
@@ -120,13 +121,13 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="consultant_list.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/consultant_list.php" class="sidebar-link">
                                 <i class="mdi mdi-format-list-bulleted"></i>
                                 <span class="hide-menu">Consultant List </span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="consulting_agent_form.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/consulting_agent_form.php" class="sidebar-link">
                                 <i class="mdi mdi-account-plus"></i>
                                 <span class="hide-menu">Add Buyer</span>
                             </a>
@@ -136,7 +137,7 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
 
                 <!-- Properties Management -->
                 <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="public-inquiries.php" aria-expanded="false">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= $__nuruBase ?>/html/material/public-inquiries.php" aria-expanded="false">
                         <i class="mdi mdi-message-text-outline"></i>
                         <span class="hide-menu">Website Enquiries</span>
                     </a>
@@ -148,25 +149,25 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="properties-list.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/properties-list.php" class="sidebar-link">
                                 <i class="mdi mdi-format-list-bulleted"></i>
                                 <span class="hide-menu"> Properties List</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="properties-available.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/properties-available.php" class="sidebar-link">
                                 <i class="mdi mdi-home"></i>
                                 <span class="hide-menu">Available Properties</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="properties-sold.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/properties-sold.php" class="sidebar-link">
                                 <i class="mdi mdi-home-check"></i>
                                 <span class="hide-menu">Sold Properties</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="property_admin_form.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/property_admin_form.php" class="sidebar-link">
                                 <i class="mdi mdi-home-plus"></i>
                                 <span class="hide-menu">Add Property</span>
                             </a>
@@ -182,13 +183,13 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="match-table1.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/match-table1.php" class="sidebar-link">
                                 <i class="mdi mdi-table"></i>
                                 <span class="hide-menu">Match Table</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="match-results.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/match-results.php" class="sidebar-link">
                                 <i class="mdi mdi-format-list-bulleted"></i>
                                 <span class="hide-menu">Match Results</span>
                             </a>
@@ -205,24 +206,24 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     <ul aria-expanded="false" class="collapse first-level">
                        
                         <li class="sidebar-item">
-                            <a href="tasks-cancelled.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/tasks-cancelled.php" class="sidebar-link">
                                 <i class="mdi mdi-clock-outline"></i>
                                 <span class="hide-menu">Cancelled</span>
                             </a>
                         </li>                        <li class="sidebar-item">
-                            <a href="tasks-pending.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/tasks-pending.php" class="sidebar-link">
                                 <i class="mdi mdi-clock-outline"></i>
                                 <span class="hide-menu">Pending</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="tasks-in-progress.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/tasks-in-progress.php" class="sidebar-link">
                                 <i class="mdi mdi-progress-clock"></i>
                                 <span class="hide-menu">In Progress</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="tasks-completed.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/tasks-completed.php" class="sidebar-link">
                                 <i class="mdi mdi-check-circle"></i>
                                 <span class="hide-menu">Completed</span>
                             </a>
@@ -235,8 +236,8 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                         <span class="hide-menu">Checklist Configuration</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
-                        <li class="sidebar-item"><a href="stages.php" class="sidebar-link"><span class="hide-menu">Stages</span></a></li>
-                        <li class="sidebar-item"><a href="items.php" class="sidebar-link"><span class="hide-menu">Items</span></a></li>
+                        <li class="sidebar-item"><a href="<?= $__nuruBase ?>/html/material/stages.php" class="sidebar-link"><span class="hide-menu">Stages</span></a></li>
+                        <li class="sidebar-item"><a href="<?= $__nuruBase ?>/html/material/items.php" class="sidebar-link"><span class="hide-menu">Items</span></a></li>
                     </ul>
                 </li>
 
@@ -248,43 +249,43 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="reports-dashboard.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/reports-dashboard.php" class="sidebar-link">
                                 <i class="mdi mdi-view-dashboard"></i>
                                 <span class="hide-menu">Report Dashboard</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="reports-sales.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/reports-sales.php" class="sidebar-link">
                                 <i class="mdi mdi-trending-up"></i>
                                 <span class="hide-menu">Sales Reports</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="reports-property.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/reports-property.php" class="sidebar-link">
                                 <i class="mdi mdi-home-analytics"></i>
                                 <span class="hide-menu">Property Reports</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="reports-agent.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/reports-agent.php" class="sidebar-link">
                                 <i class="mdi mdi-account-group"></i>
                                 <span class="hide-menu">Agent Reports</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="exports.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/exports.php" class="sidebar-link">
                                 <i class="mdi mdi-file-export"></i>
                                 <span class="hide-menu">Export Data</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="reports-custom.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/reports-custom.php" class="sidebar-link">
                                 <i class="mdi mdi-tune"></i>
                                 <span class="hide-menu">Custom Reports</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="analytics.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/analytics.php" class="sidebar-link">
                                 <i class="mdi mdi-google-analytics"></i>
                                 <span class="hide-menu">Analytics</span>
                             </a>
@@ -307,25 +308,25 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="settings-general.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/settings-general.php" class="sidebar-link">
                                 <i class="mdi mdi-cog"></i>
                                 <span class="hide-menu">General Settings</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="settings-database.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/settings-database.php" class="sidebar-link">
                                 <i class="mdi mdi-database"></i>
                                 <span class="hide-menu">Database Settings</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="settings-email.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/settings-email.php" class="sidebar-link">
                                 <i class="mdi mdi-email"></i>
                                 <span class="hide-menu">Email Settings</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="backup-restore.php" class="sidebar-link">
+                            <a href="<?= $__nuruBase ?>/html/material/backup-restore.php" class="sidebar-link">
                                 <i class="mdi mdi-backup-restore"></i>
                                 <span class="hide-menu">Database Backup</span>
                             </a>
@@ -335,7 +336,7 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
 
                 <!-- User Management -->
                 <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="user-management.php" aria-expanded="false">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= $__nuruBase ?>/html/material/user-management.php" aria-expanded="false">
                         <i class="mdi mdi-account-multiple"></i>
                         <span class="hide-menu">User Management</span>
                     </a>
@@ -343,7 +344,7 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
 
                 <!-- Activity Log -->
                 <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="activity-log.php" aria-expanded="false">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?= $__nuruBase ?>/html/material/activity-log.php" aria-expanded="false">
                         <i class="mdi mdi-history"></i>
                         <span class="hide-menu">Activity Log</span>
                     </a>
@@ -359,15 +360,15 @@ $__sidebarName = $_SESSION['full_name'] ?? $_SESSION['email'] ?? 'Nuru user';
     <!-- Bottom points-->
     <div class="sidebar-footer">
         <!-- item-->
-        <a href="change-password.php" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Change password">
+        <a href="<?= $__nuruBase ?>/html/material/change-password.php" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Change password">
             <i class="ti-lock"></i>
         </a>
         <!-- item-->
-        <a href="<?= $__sidebarHome ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Dashboard">
+        <a href="<?= $__nuruBase ?>/html/material/<?= $__sidebarHome ?>" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Dashboard">
             <i class="mdi mdi-view-dashboard"></i>
         </a>
         <!-- item-->
-        <a href="./config/logout.php" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Logout">
+        <a href="<?= $__nuruBase ?>/html/material/config/logout.php" class="link" data-bs-toggle="tooltip" data-bs-placement="top" title="Logout">
             <i class="mdi mdi-power"></i>
         </a>
     </div>
