@@ -251,9 +251,25 @@ final class SettingsController extends Controller
             $role = $_POST['role'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            if (!preg_match('/^[A-Za-z0-9._-]{3,64}$/', $username) || !filter_var($email, FILTER_VALIDATE_EMAIL) || $fullName === '' || mb_strlen($fullName) > 255 || !in_array($role, $administrativeRoles, true) || strlen($password) < 12 || !preg_match('/[A-Za-z]/', $password) || !preg_match('/\d/', $password)) {
-                $errors[] = 'Provide a valid username, email, name, role, and a password of at least 12 characters containing letters and numbers.';
-            } else {
+            if (!preg_match('/^[A-Za-z0-9._-]{3,64}$/', $username)) {
+                $errors[] = 'Username must be 3-64 characters, using only letters, numbers, dots, underscores, and hyphens (no spaces).';
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'Provide a valid email address.';
+            }
+            if ($fullName === '' || mb_strlen($fullName) > 255) {
+                $errors[] = 'Provide a full name of no more than 255 characters.';
+            }
+            if (!in_array($role, $administrativeRoles, true)) {
+                $errors[] = 'Select a valid role.';
+            }
+            if (strlen($password) < 12) {
+                $errors[] = 'Password must be at least 12 characters long.';
+            } elseif (!preg_match('/[A-Za-z]/', $password) || !preg_match('/\d/', $password)) {
+                $errors[] = 'Password must contain at least one letter and one number.';
+            }
+
+            if (!$errors) {
                 $check = $this->pdo->prepare('SELECT id FROM admin_users WHERE email = ? OR username = ?');
                 $check->execute([$email, $username]);
                 if ($check->fetch()) {

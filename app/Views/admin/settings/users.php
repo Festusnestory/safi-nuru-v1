@@ -41,7 +41,9 @@ $pageTitle = 'User Management';
                             <input type="hidden" name="action" value="create_user">
                             <div class="mb-3">
                                 <label class="form-label" for="new-username">Username</label>
-                                <input id="new-username" type="text" name="username" class="form-control" autocomplete="username" maxlength="64" required>
+                                <input id="new-username" type="text" name="username" class="form-control" autocomplete="username" maxlength="64"
+                                       pattern="[A-Za-z0-9._-]{3,64}" title="3-64 characters: letters, numbers, dots, underscores, and hyphens only - no spaces" required>
+                                <div class="form-text">3-64 characters: letters, numbers, dots, underscores, and hyphens only - no spaces.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="new-full-name">Full Name</label>
@@ -61,7 +63,9 @@ $pageTitle = 'User Management';
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="new-password">Temporary Password</label>
-                                <input id="new-password" type="password" name="password" class="form-control" minlength="12" autocomplete="new-password" required>
+                                <input id="new-password" type="password" name="password" class="form-control" minlength="12" autocomplete="new-password"
+                                       pattern="(?=.*[A-Za-z])(?=.*\d).{12,}" title="At least 12 characters, including at least one letter and one number" required>
+                                <div class="form-text">At least 12 characters, including at least one letter and one number.</div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Create User</button>
                         </form>
